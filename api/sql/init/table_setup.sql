@@ -5,6 +5,10 @@ DROP TABLE IF EXISTS `Feeds`;
 DROP TABLE IF EXISTS `Food`;
 DROP TABLE IF EXISTS `Cat`;
 DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Diet_Plan`;
+DROP TABLE IF EXISTS `Cat_Problem`;
+DROP TABLE IF EXISTS `Medicinal_Problem`;
+DROP TABLE IF EXISTS `Referenced_In`;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -63,5 +67,62 @@ CREATE TABLE Feeds (
     
     -- This is the MAJOR fix. We must reference both columns of the Cat Primary Key.
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
+    FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
+
+);
+
+-- 5. Medicinal Problem Table
+CREATE TABLE Medicinal_Problem (
+    Mname VARCHAR(65) NOT NULL,
+    description VARCHAR(1024),
+
+    PRIMARY KEY (Mname)
+);
+
+-- 6. Diet Plan Table
+CREATE TABLE Diet_Plan (
+    uid INT NOT NULL,
+    cname VARCHAR(30) NOT NULL,
+    dp_number INT NOT NULL, 
+    feeding_Intervals INT NOT NULL,
+    feeding_portion INT,
+    description VARCHAR(1024),  --Is this enough characters?
+
+    CONSTRAINT chk_feedingint CHECK (feeding_Intervals > 0),
+    CONSTRAINT chk_feedingportion CHECK (feeding_portion > 0),
+    PRIMARY KEY(dp_number), 
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE
+
+);
+
+-- 7. Cat Problem Table
+CREATE TABLE Cat_Problem (
+    uid INT NOT NULL,
+    cname VARCHAR(30) NOT NULL,
+    pname VARCHAR(65) NOT NULL,
+    diagnosis_date DATE,
+    severity CHAR(10) NOT NULL,
+    description VARCHAR(1024),
+
+    CONSTRAINT chk_severity CHECK (severity = 'Low' OR severity = 'Moderate' OR severity = 'Severe'),
+    PRIMARY KEY (uid, cname, pname),
+
+    -- Fixing Foreign Key reference to Cat table
+    -- Foreign key pname must reference Medicinal_Problem table
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid,name) ON DELETE CASCADE,
+    FOREIGN KEY (pname) REFERENCES Medicinal_Problem(Mname) ON DELETE CASCADE
+
+);
+
+-- 8. Refereced In Table
+CREATE TABLE Referenced_In (
+    uid INT NOT NULL,
+    cname VARCHAR(30) NOT NULL,
+    dp_number INT NOT NULL,
+    fid INT NOT NULL,
+
+    PRIMARY KEY (uid, cname, dp_number, fid),
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
+    FOREIGN KEY (dp_number) REFERENCES Diet_Plan(dp_number) ON DELETE CASCADE,
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
 );
