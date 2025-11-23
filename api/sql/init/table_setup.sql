@@ -8,9 +8,8 @@ DROP TABLE IF EXISTS `User`;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- 1. User Table
--- Added backticks around `User` because it is a reserved keyword in MySQL.
-CREATE TABLE `User` (
+
+CREATE TABLE `User` ( -- Added backticks around `User` because it is a reserved keyword in MySQL.
     uid INT NOT NULL,
     name VARCHAR(50),
     email VARCHAR(50) UNIQUE,
@@ -22,7 +21,6 @@ CREATE TABLE `User` (
     PRIMARY KEY (uid)
 );
 
--- 2. Cat Table
 CREATE TABLE Cat (
     uid INT NOT NULL,
     name VARCHAR(30) NOT NULL,
@@ -37,7 +35,6 @@ CREATE TABLE Cat (
     FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE
 );
 
--- 3. Food Table
 CREATE TABLE Food (
     fid INT NOT NULL,
     brand VARCHAR(50),
@@ -51,17 +48,13 @@ CREATE TABLE Food (
     PRIMARY KEY (fid)
 );
 
--- 4. Feeds Table
 CREATE TABLE Feeds (
     uid INT NOT NULL,
     cname VARCHAR(30) NOT NULL,
     fid INT NOT NULL,
     feed_date DATE NOT NULL,
     feed_time TIME NOT NULL,
-    
     PRIMARY KEY (uid, cname, fid, feed_date, feed_time),
-    
-    -- This is the MAJOR fix. We must reference both columns of the Cat Primary Key.
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
 );
