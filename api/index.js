@@ -1,38 +1,23 @@
-// The Toolkit (Imports)
+const INIT = true; // TEMP: Set to true to enable DB initialization route
+/**
+ * API SETUP (RARELY TOUCH THIS)
+ */
+// Import Libraries
 const express = require('express'); // The web server framework (The "Waiter" training)
 const mysql = require('mysql2');    // The tool to talk to MySQL (The "Kitchen" key)
 const cors = require('cors');       // Security permissions
 require('dotenv').config();         // The tool to read your secret password file
-const fs = require('fs');           // File System to read files
 
-// --- DEBUGGING START ---
-console.log("--- DB CONFIG DEBUG ---");
-console.log("DB_HOST:", process.env.DB_HOST);
-console.log("DB_USER:", process.env.DB_USER);
-// Check if password exists and print length/first/last chars
-if (process.env.DB_PASSWORD) {
-    console.log("DB_PASSWORD Length:", process.env.DB_PASSWORD.length);
-    console.log("DB_PASSWORD First Char:", process.env.DB_PASSWORD[0]);
-    console.log("DB_PASSWORD Last Char:", process.env.DB_PASSWORD[process.env.DB_PASSWORD.length - 1]);
-} else {
-    console.log("DB_PASSWORD: NOT LOADED");
-}
-console.log("-----------------------");
-// --- DEBUGGING END ---
-
-const path = require('path');       // Path tool to find files
-
-//Setup (Initialization)
+// Setup Express (Initialization)
 const app = express(); //actual server object. Anytime you want the server to do something, you say app.doSomething()
 const PORT = process.env.PORT || 3000; //like a radio frequency
 
-//The Rules (Middleware)
+// Setup Middleware
 app.use(cors()); //Security rules. bodyguard
 app.use(express.json());
 
-//DATABASE CONNECTION POOL
-// We use a "pool" to manage connections efficiently. 
-// It handles opening/closing connections for you automatically.
+// DATABASE CONNECTION POOL
+// Handles opening/closing connections for you automatically.
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -44,6 +29,17 @@ const pool = mysql.createPool({
     multipleStatements: true // TEMP: This allows running a file with multiple queries; only enable for setup scripts
 });
 const db = pool.promise(); // Convert pool to use Promises (allows using async/await which is cleaner)
+module.exports = { db }; // Export the database connection for use in other files
+
+
+
+/**
+ * CHANGE STUFF BELLOW HERE TO ADD MORE ROUTES
+ */
+// ROUTERS
+// temp: load database and populate sample/test data
+const dbInitRouter = require('./routes/db_init.js');
+app.use('/db', dbInitRouter);
 
 //API ROUTES (ENDPOINTS)
 
@@ -52,84 +48,14 @@ app.get('/', (req, res) => {
     res.send('API is running!');
 });
 
-//temp load database
-app.post('/api/init', async (req, res) => {
-    try {
-        const filePath = path.join(__dirname, 'db_setup.sql');
-        const script = fs.readFileSync(filePath, 'utf8');
-        await db.query(script);
-
-        // const [result] = await db.query(
-        //     'INSERT INTO items (name, description) VALUES (?, ?)', 
-        //     [name, description]
-        // );
-        
-        res.status(200).json({ message: "Database initialized successfully!" });
-    } catch(e) {
-        console.log(e);
-        res.status(500).json({error: 'Error: database init', details: e.message});
-    }
-});
 
 
 
-// // GET /api/items - Fetch ALL items from the database
-// app.get('/api/items', async (req, res) => {
-//     try {
-//         // Run the SQL query
-//         const [rows] = await db.query('SELECT * FROM items');
-//         // Send the data back to the frontend
-//         res.json(rows);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Database error' });
-//     }
-// });
 
-// // GET /api/items/:id - Fetch a SINGLE item by ID
-// app.get('/api/items/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         // Use ? as a placeholder to prevent SQL Injection attacks
-//         const [rows] = await db.query('SELECT * FROM items WHERE id = ?', [id]);
-        
-//         if (rows.length === 0) {
-//             return res.status(404).json({ error: 'Item not found' });
-//         }
-        
-//         res.json(rows[0]);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Database error' });
-//     }
-// });
 
-// // POST /api/items - Create a NEW item
-// app.post('/api/items', async (req, res) => {
-//     try {
-//         // Extract data sent from the frontend (e.g., name, price)
-//         const { name, description } = req.body;
-        
-//         // Validate data
-//         if (!name) {
-//             return res.status(400).json({ error: 'Name is required' });
-//         }
 
-//         // Insert into database
-//         const [result] = await db.query(
-//             'INSERT INTO items (name, description) VALUES (?, ?)', 
-//             [name, description]
-//         );
-        
-//         // Send back the new ID so the frontend knows it succeeded
-//         res.status(201).json({ id: result.insertId, name, description });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Database error' });
-//     }
-// });
 
-//START SERVER
+// START SERVER
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
