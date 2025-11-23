@@ -26,10 +26,13 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    multipleStatements: true // TEMP: This allows running a file with multiple queries; only enable for setup scripts
+    multipleStatements: INIT // TEMP: This allows running a file with multiple queries; only enable for setup scripts
 });
 const db = pool.promise(); // Convert pool to use Promises (allows using async/await which is cleaner)
-module.exports = { db }; // Export the database connection for use in other files
+module.exports.db = db; // Export the database connection for use in other files
+
+const SQL_PATH = __dirname + '/sql/';
+module.exports.SQL_PATH = SQL_PATH; // export SQL folder path
 
 
 
@@ -37,9 +40,10 @@ module.exports = { db }; // Export the database connection for use in other file
  * CHANGE STUFF BELLOW HERE TO ADD MORE ROUTES
  */
 // ROUTERS
-// temp: load database and populate sample/test data
-const dbInitRouter = require('./routes/db_init.js');
-app.use('/db', dbInitRouter);
+if (INIT) {
+    const dbInitRouter = require('./routes/db_init.js');
+    app.use('/dev', dbInitRouter);
+}
 
 //API ROUTES (ENDPOINTS)
 
