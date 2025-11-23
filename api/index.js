@@ -1,9 +1,10 @@
-//The Toolkit (Imports)
+// The Toolkit (Imports)
 const express = require('express'); // The web server framework (The "Waiter" training)
 const mysql = require('mysql2');    // The tool to talk to MySQL (The "Kitchen" key)
 const cors = require('cors');       // Security permissions
 require('dotenv').config();         // The tool to read your secret password file
-const fs = require('fs');           // TEMP: File System to read files
+const fs = require('fs');           // File System to read files
+
 // --- DEBUGGING START ---
 console.log("--- DB CONFIG DEBUG ---");
 console.log("DB_HOST:", process.env.DB_HOST);
@@ -18,7 +19,8 @@ if (process.env.DB_PASSWORD) {
 }
 console.log("-----------------------");
 // --- DEBUGGING END ---
-const path = require('path');       // TEMP: Path tool to find files
+
+const path = require('path');       // Path tool to find files
 
 //Setup (Initialization)
 const app = express(); //actual server object. Anytime you want the server to do something, you say app.doSomething()
@@ -39,11 +41,9 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    multipleStatements: true // TEMP: This allows running a file with multiple queries
+    multipleStatements: true // TEMP: This allows running a file with multiple queries; only enable for setup scripts
 });
 const db = pool.promise(); // Convert pool to use Promises (allows using async/await which is cleaner)
-
-
 
 //API ROUTES (ENDPOINTS)
 
@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
 //temp load database
 app.post('/api/init', async (req, res) => {
     try {
-        const filePath = path.join(__dirname, 'mysql_setup.sql');
+        const filePath = path.join(__dirname, 'db_setup.sql');
         const script = fs.readFileSync(filePath, 'utf8');
         await db.query(script);
 

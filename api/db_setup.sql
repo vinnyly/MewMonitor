@@ -17,7 +17,6 @@ CREATE TABLE `User` (
     phone CHAR(12),
     password VARCHAR(100),
     num_cats INT NOT NULL DEFAULT 0,
-    -- MySQL 8.0+ supports CHECK constraints. Older versions usually ignore them.
     CONSTRAINT chk_email CHECK(email LIKE '%@%.%'),
     CONSTRAINT chk_phone CHECK(phone LIKE '___-___-____'),
     PRIMARY KEY (uid)
@@ -58,7 +57,7 @@ CREATE TABLE Feeds (
     cname VARCHAR(30) NOT NULL,
     fid INT NOT NULL,
     feed_date DATE NOT NULL,
-    feed_time TIME NOT NULL, -- Changed CHAR(8) to TIME data type
+    feed_time TIME NOT NULL,
     
     PRIMARY KEY (uid, cname, fid, feed_date, feed_time),
     
