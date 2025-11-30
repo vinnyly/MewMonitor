@@ -29,3 +29,44 @@ VALUES
 (2, 'Shadow', 102, '2025-11-17', '08:31:00'),
 (3, 'Luna', 103, '2025-11-17', '09:00:00'),
 (1, 'Fluffy', 105, '2025-11-17', '18:00:00');
+
+INSERT INTO Medicinal_Problem (Mname, description)
+VALUES
+('Obesity', 'Excess body weight for a cat, often caused by overeating.'),
+('Allergies', 'Food or environmental sensitivities causing reactions.'),
+('Kidney Disease', 'Chronic kidney issues requiring special diet.'),
+('Dental Issues', 'Teeth or gum problems affecting eating.'),
+('Sensitive Stomach', 'Digestive sensitivity to certain foods.');
+
+INSERT INTO Diet_Plan (uid, cname, dp_number, feeding_Intervals, feeding_portion, description)
+VALUES
+(1, 'Fluffy', 10, 2, 80, 'High protein wet-food focused diet.'),
+(2, 'Whiskers', 20, 3, 60, 'Balanced dry-food diet with occasional wet food.'),
+(2, 'Shadow', 21, 2, 90, 'High-calorie diet for large breeds.'),
+(3, 'Luna', 30, 3, 50, 'Light diet suitable for younger cats.'),
+(4, 'Simba', 40, 2, 75, 'High-protein diet for active cats.');
+
+INSERT INTO Cat_Problem (uid, cname, pname, diagnosis_date, severity, description)
+VALUES
+(1, 'Fluffy', 'Obesity', '2025-11-01', 'Moderate', 'Fluffy is slightly overweight.'),
+(2, 'Whiskers', 'Allergies', '2025-10-23', 'Low', 'Occasional mild reactions to chicken.'),
+(2, 'Shadow', 'Dental Issues', '2025-09-15', 'Severe', 'Significant difficulty chewing dry food.'),
+(3, 'Luna', 'Sensitive Stomach', '2025-11-10', 'Moderate', 'Requires gentle food.'),
+(4, 'Simba', 'Kidney Disease', '2025-08-08', 'Low', 'Early-stage kidney issues.');
+
+INSERT INTO Referenced_In (uid, cname, dp_number, fid)
+VALUES
+(1, 'Fluffy', 10, 101),
+(1, 'Fluffy', 10, 105),
+
+(2, 'Whiskers', 20, 102),
+(2, 'Whiskers', 20, 101),
+
+(2, 'Shadow', 21, 102),
+(2, 'Shadow', 21, 104),
+
+(3, 'Luna', 30, 103),
+(3, 'Luna', 30, 105),
+
+(4, 'Simba', 40, 104),
+(4, 'Simba', 40, 102);
