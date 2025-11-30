@@ -14,105 +14,99 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 CREATE TABLE `User` ( -- Added backticks around `User` because it is a reserved keyword in MySQL.
-    uid INT NOT NULL,
-    name VARCHAR(50),
-    email VARCHAR(50) UNIQUE,
+    uid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(64),
+    email VARCHAR(254) UNIQUE NOT NULL,
     phone CHAR(12),
-    password VARCHAR(100),
+    password VARCHAR(128) NOT NULL,
     num_cats INT NOT NULL DEFAULT 0,
+
     CONSTRAINT chk_email CHECK(email LIKE '%@%.%'),
     CONSTRAINT chk_phone CHECK(phone LIKE '___-___-____'),
     PRIMARY KEY (uid)
 );
 
 CREATE TABLE Cat (
-    uid INT NOT NULL,
-    name VARCHAR(30) NOT NULL,
+    uid BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(64) NOT NULL,
     weight DECIMAL(4,2),
-    breed VARCHAR(20),
+    breed VARCHAR(64),
     age INT,
     gender CHAR(1),
+
     CONSTRAINT chk_weight CHECK(weight BETWEEN 1 AND 100),
-    CONSTRAINT chk_age CHECK(age BETWEEN 0 AND 50),
+    CONSTRAINT chk_age CHECK(age BETWEEN 1 AND 50),
     CONSTRAINT chk_gender CHECK(gender='M' OR gender='F'),
     PRIMARY KEY (uid, name),
     FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE
 );
 
+CREATE TABLE Diet_Plan (
+    uid BIGINT UNSIGNED NOT NULL,
+    cname VARCHAR(64) NOT NULL,
+    dp_number INT UNSIGNED NOT NULL, 
+    feeding_interval INT UNSIGNED NOT NULL,
+    feeding_portion INT UNSIGNED,
+    description VARCHAR(1024),
+
+    PRIMARY KEY(uid, cname, dp_number), 
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE
+);
+
+CREATE TABLE Cat_Problem (
+    uid BIGINT UNSIGNED NOT NULL,
+    cname VARCHAR(64) NOT NULL,
+    pname VARCHAR(64) NOT NULL,
+    diagnosis_date DATE,
+    severity CHAR(10),
+    description VARCHAR(1024),
+
+    CONSTRAINT chk_severity CHECK (severity = 'Low' OR severity = 'Moderate' OR severity = 'Severe'),
+    PRIMARY KEY (uid, cname, pname),
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid,name) ON DELETE CASCADE,
+    FOREIGN KEY (pname) REFERENCES Medicinal_Problem(Mname) ON DELETE CASCADE
+);
+
 CREATE TABLE Food (
-    fid INT NOT NULL,
-    brand VARCHAR(50),
-    name VARCHAR(50) NOT NULL,
-    type CHAR(3),
-    calories INT,
-    carbs INT,
-    protein INT,
-    fat INT,
-    CONSTRAINT chk_type CHECK(type = 'Wet' OR type = 'Dry'),
+    fid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    brand VARCHAR(64),
+    name VARCHAR(64) NOT NULL,
+    type CHAR(5),
+    calories DECIMAL(4, 2),
+    carbs DECIMAL(4, 2),
+    protein DECIMAL(4, 2),
+    fat DECIMAL(4, 2),
+
+    CONSTRAINT chk_calories CHECK(calories >= 0),
+    CONSTRAINT chk_nutrients CHECK(carbs >= 0 AND protein >= 0 AND fat >= 0),
+    CONSTRAINT chk_type CHECK(type = 'Wet' OR type = 'Dry' OR type = 'Mixed'),
     PRIMARY KEY (fid)
 );
 
 CREATE TABLE Feeds (
-    uid INT NOT NULL,
-    cname VARCHAR(30) NOT NULL,
-    fid INT NOT NULL,
+    uid BIGINT NOT NULL,
+    cname VARCHAR(64) NOT NULL,
+    fid BIGINT NOT NULL,
     feed_date DATE NOT NULL,
     feed_time TIME NOT NULL,
+
     PRIMARY KEY (uid, cname, fid, feed_date, feed_time),
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
-
 );
 
--- 5. Medicinal Problem Table
 CREATE TABLE Medicinal_Problem (
-    Mname VARCHAR(65) NOT NULL,
+    Mname VARCHAR(64) NOT NULL,
     description VARCHAR(1024),
 
     PRIMARY KEY (Mname)
 );
 
--- 6. Diet Plan Table
-CREATE TABLE Diet_Plan (
-    uid INT NOT NULL,
-    cname VARCHAR(30) NOT NULL,
-    dp_number INT NOT NULL, 
-    feeding_Intervals INT NOT NULL,
-    feeding_portion INT,
-    description VARCHAR(1024),  --Is this enough characters?
-
-    CONSTRAINT chk_feedingint CHECK (feeding_Intervals > 0),
-    CONSTRAINT chk_feedingportion CHECK (feeding_portion > 0),
-    PRIMARY KEY(dp_number), 
-    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE
-
-);
-
--- 7. Cat Problem Table
-CREATE TABLE Cat_Problem (
-    uid INT NOT NULL,
-    cname VARCHAR(30) NOT NULL,
-    pname VARCHAR(65) NOT NULL,
-    diagnosis_date DATE,
-    severity CHAR(10) NOT NULL,
-    description VARCHAR(1024),
-
-    CONSTRAINT chk_severity CHECK (severity = 'Low' OR severity = 'Moderate' OR severity = 'Severe'),
-    PRIMARY KEY (uid, cname, pname),
-
-    -- Fixing Foreign Key reference to Cat table
-    -- Foreign key pname must reference Medicinal_Problem table
-    FOREIGN KEY (uid, cname) REFERENCES Cat(uid,name) ON DELETE CASCADE,
-    FOREIGN KEY (pname) REFERENCES Medicinal_Problem(Mname) ON DELETE CASCADE
-
-);
-
--- 8. Refereced In Table
 CREATE TABLE Referenced_In (
-    uid INT NOT NULL,
-    cname VARCHAR(30) NOT NULL,
-    dp_number INT NOT NULL,
-    fid INT NOT NULL,
+    uid BIGINT NOT NULL,
+    cname VARCHAR(64) NOT NULL,
+    dp_number BIGINT NOT NULL,
+    fid BIGINT NOT NULL,
 
     PRIMARY KEY (uid, cname, dp_number, fid),
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
