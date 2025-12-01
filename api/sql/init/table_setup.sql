@@ -19,7 +19,7 @@ CREATE TABLE `User` ( -- Added backticks around `User` because it is a reserved 
     email VARCHAR(254) UNIQUE NOT NULL,
     phone CHAR(12),
     password VARCHAR(128) NOT NULL,
-    num_cats INT NOT NULL DEFAULT 0,
+    num_cats INT UNSIGNED NOT NULL DEFAULT 0,
 
     CONSTRAINT chk_email CHECK(email LIKE '%@%.%'),
     CONSTRAINT chk_phone CHECK(phone LIKE '___-___-____'),
@@ -31,7 +31,7 @@ CREATE TABLE Cat (
     name VARCHAR(64) NOT NULL,
     weight DECIMAL(4,2),
     breed VARCHAR(64),
-    age INT,
+    age TINYINT UNSIGNED,
     gender CHAR(1),
 
     CONSTRAINT chk_weight CHECK(weight BETWEEN 1 AND 100),
@@ -53,6 +53,13 @@ CREATE TABLE Diet_Plan (
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE
 );
 
+CREATE TABLE Medicinal_Problem (
+    Mname VARCHAR(64) NOT NULL,
+    description VARCHAR(1024),
+
+    PRIMARY KEY (Mname)
+);
+
 CREATE TABLE Cat_Problem (
     uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
@@ -61,7 +68,7 @@ CREATE TABLE Cat_Problem (
     severity CHAR(10),
     description VARCHAR(1024),
 
-    CONSTRAINT chk_severity CHECK (severity = 'Low' OR severity = 'Moderate' OR severity = 'Severe'),
+    CONSTRAINT chk_severity CHECK (severity IN ('Low', 'Moderate', 'Severe')),
     PRIMARY KEY (uid, cname, pname),
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid,name) ON DELETE CASCADE,
     FOREIGN KEY (pname) REFERENCES Medicinal_Problem(Mname) ON DELETE CASCADE
@@ -79,14 +86,14 @@ CREATE TABLE Food (
 
     CONSTRAINT chk_calories CHECK(calories >= 0),
     CONSTRAINT chk_nutrients CHECK(carbs >= 0 AND protein >= 0 AND fat >= 0),
-    CONSTRAINT chk_type CHECK(type = 'Wet' OR type = 'Dry' OR type = 'Mixed'),
+    CONSTRAINT chk_type CHECK(type IN ('Wet', 'Dry', 'Mixed')),
     PRIMARY KEY (fid)
 );
 
 CREATE TABLE Feeds (
-    uid BIGINT NOT NULL,
+    uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
-    fid BIGINT NOT NULL,
+    fid BIGINT UNSIGNED NOT NULL,
     feed_date DATE NOT NULL,
     feed_time TIME NOT NULL,
 
@@ -95,21 +102,13 @@ CREATE TABLE Feeds (
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
 );
 
-CREATE TABLE Medicinal_Problem (
-    Mname VARCHAR(64) NOT NULL,
-    description VARCHAR(1024),
-
-    PRIMARY KEY (Mname)
-);
-
 CREATE TABLE Referenced_In (
-    uid BIGINT NOT NULL,
+    uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
-    dp_number BIGINT NOT NULL,
-    fid BIGINT NOT NULL,
+    dp_number INT UNSIGNED NOT NULL,
+    fid BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (uid, cname, dp_number, fid),
-    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
-    FOREIGN KEY (dp_number) REFERENCES Diet_Plan(dp_number) ON DELETE CASCADE,
+    FOREIGN KEY (uid, cname, dp_number) REFERENCES Diet_Plan(uid, cname, dp_number) ON DELETE CASCADE,
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
 );

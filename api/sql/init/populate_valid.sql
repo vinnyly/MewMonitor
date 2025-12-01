@@ -18,7 +18,7 @@ INSERT INTO Food (fid, brand, name, type, calories, carbs, protein, fat)
 VALUES
 (101, 'PurrfectPaws', 'Salmon Delight', 'Wet', 150, 10, 20, 5),
 (102, 'KibbleKing', 'Chicken Crunch', 'Dry', 350, 40, 30, 15),
-(103, 'MeowMix', 'Tuna Pate', 'Wet', 120, 5, 15, 8),
+(103, 'MeowMix', 'Tuna Pate', 'Mixed', 120, 5, 15, 8),
 (104, 'HealthCat', 'Indoor Formula', 'Dry', 300, 35, 35, 10),
 (105, 'PurrfectPaws', 'Ocean Medley', 'Wet', 140, 8, 18, 6);
 
@@ -38,7 +38,7 @@ VALUES
 ('Dental Issues', 'Teeth or gum problems affecting eating.'),
 ('Sensitive Stomach', 'Digestive sensitivity to certain foods.');
 
-INSERT INTO Diet_Plan (uid, cname, dp_number, feeding_Intervals, feeding_portion, description)
+INSERT INTO Diet_Plan (uid, cname, dp_number, feeding_interval, feeding_portion, description)
 VALUES
 (1, 'Fluffy', 10, 2, 80, 'High protein wet-food focused diet.'),
 (2, 'Whiskers', 20, 3, 60, 'Balanced dry-food diet with occasional wet food.'),

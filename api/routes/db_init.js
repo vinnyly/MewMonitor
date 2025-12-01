@@ -6,7 +6,7 @@ const fs = require('fs');           // File system tool to read files
 const path = require('path');       // Path tool to handle file paths
 const SQL_PATH = require('../index.js').SQL_PATH; // import SQL folder path
 
-router.post('/init', async (res) => { // /dev/init
+router.post('/init', async (req, res) => { // /dev/init
     try {
         const createScripts = fs.readFileSync(path.join(SQL_PATH, '/init/table_setup.sql'), 'utf8');
         await db.query(createScripts);
@@ -21,7 +21,7 @@ router.post('/init', async (res) => { // /dev/init
     }
 });
 
-router.post('/test_invalid', async (res) => { // /dev/test_invalid
+router.post('/test_invalid', async (req, res) => { // /dev/test_invalid
     try {
         const invalidInsertScripts = fs.readFileSync(path.join(SQL_PATH, '/init/populate_invalid.sql'), 'utf8');
         await db.query(invalidInsertScripts);
