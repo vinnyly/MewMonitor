@@ -23,13 +23,40 @@ router.post('/init', async (req, res) => { // /dev/init
 
 router.post('/test_invalid', async (req, res) => { // /dev/test_invalid
     try {
-        const invalidInsertScripts = fs.readFileSync(path.join(SQL_PATH, '/init/populate_invalid.sql'), 'utf8');
-        await db.query(invalidInsertScripts);
+        const invalidInsertScripts = fs.readFileSync(path.join(SQL_PATH, '/init/test_invalid.sql'), 'utf8');
+        
+        // Split the script into individual INSERT statements
+        const statements = invalidInsertScripts
+            .split(';')
+            .map(stmt => stmt.trim())
+            .filter(stmt => stmt.length > 0);
+        
+        const results = [];
+        
+        for (let i = 0; i < statements.length; i++) {
+            try {
+                await db.query(statements[i]);
+                results.push({
+                    status: 'UNEXPECTED SUCCESS',
+                    query: statements[i]
+                });
+            } catch (err) {
+                results.push({
+                    status: 'EXPECTED FAILURE',
+                    error: err.message,
+                    query: statements[i]
+                });
+            }
+        }
 
-        return res.status(200).json({ message: "Invalid data inserted (this is NOT expected)." });
+        return res.status(200).json({ 
+            message: "Invalid data test completed",
+            totalStatements: statements.length,
+            results: results
+        });
     } catch(e) {
         console.log(e);
-        return res.status(500).json({error: 'Error: inserting invalid data (expected)', details: e.message});
+        return res.status(500).json({error: 'Error: reading invalid data script', details: e.message});
     }
 });
 

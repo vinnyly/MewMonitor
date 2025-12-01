@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS `Medicinal_Problem`;
 DROP TABLE IF EXISTS `Referenced_In`;
 
 SET FOREIGN_KEY_CHECKS = 1;
+SET SESSION sql_mode = 'STRICT_ALL_TABLES';
 
 
 CREATE TABLE `User` ( -- Added backticks around `User` because it is a reserved keyword in MySQL.
@@ -79,10 +80,10 @@ CREATE TABLE Food (
     brand VARCHAR(64),
     name VARCHAR(64) NOT NULL,
     type CHAR(5),
-    calories DECIMAL(4, 2),
-    carbs DECIMAL(4, 2),
-    protein DECIMAL(4, 2),
-    fat DECIMAL(4, 2),
+    calories DECIMAL(6, 2),
+    carbs DECIMAL(6, 2),
+    protein DECIMAL(6, 2),
+    fat DECIMAL(6, 2),
 
     CONSTRAINT chk_calories CHECK(calories >= 0),
     CONSTRAINT chk_nutrients CHECK(carbs >= 0 AND protein >= 0 AND fat >= 0),
