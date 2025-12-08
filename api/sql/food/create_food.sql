@@ -1,0 +1,1 @@
+-- todo: insert food entry into database with minimum required info

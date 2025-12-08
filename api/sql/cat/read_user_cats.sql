@@ -1,0 +1,1 @@
+-- todo: get all cats of a user (maybe just get name and gender (any info we want on the home page in ui))

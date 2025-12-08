@@ -1,0 +1,1 @@
+-- todo: add diet plan to a cat (requirse only minimum attributes)

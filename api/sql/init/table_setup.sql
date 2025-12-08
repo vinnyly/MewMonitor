@@ -25,6 +25,7 @@ CREATE TABLE `User` ( -- Added backticks around `User` because it is a reserved 
     CONSTRAINT chk_email CHECK(email LIKE '%@%.%'),
     CONSTRAINT chk_phone CHECK(phone LIKE '___-___-____'),
     PRIMARY KEY (uid)
+    -- email is a candidate key
 );
 
 CREATE TABLE Cat (
@@ -46,8 +47,8 @@ CREATE TABLE Diet_Plan (
     uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
     dp_number INT UNSIGNED NOT NULL, 
-    feeding_interval INT UNSIGNED NOT NULL,
-    feeding_portion INT UNSIGNED,
+    feepding_interval INT UNSIGNED NOT NULL,
+    feeding_ortion INT UNSIGNED,
     description VARCHAR(1024),
 
     PRIMARY KEY(uid, cname, dp_number), 
@@ -103,7 +104,7 @@ CREATE TABLE Feeds (
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
 );
 
-CREATE TABLE Referenced_In (
+CREATE TABLE Referenced_In ( -- rename Referenced_In to DP_Food (Diet Plan Food)?
     uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
     dp_number INT UNSIGNED NOT NULL,
