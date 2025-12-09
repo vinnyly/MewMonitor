@@ -46,9 +46,9 @@ CREATE TABLE Cat (
 CREATE TABLE Diet_Plan (
     uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
-    dp_number INT UNSIGNED NOT NULL, 
+    dp_number INT UNSIGNED NOT NULL AUTO_INCREMENT, 
     feepding_interval INT UNSIGNED NOT NULL,
-    feeding_ortion INT UNSIGNED,
+    feeding_portion INT UNSIGNED,
     description VARCHAR(1024),
 
     PRIMARY KEY(uid, cname, dp_number), 
