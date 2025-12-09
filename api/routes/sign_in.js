@@ -1,0 +1,45 @@
+const express = require('express');
+const router = express.Router();
+const db = require('../index.js').db; // Import the database connection
+
+const fs = require('fs');           // File system tool to read files
+const path = require('path');       // Path tool to handle file paths
+const SQL_PATH = require('../index.js').SQL_PATH; // import SQL folder path
+
+router.get('/', async (req, res) => { // 
+    // todo return signin page
+});
+
+router.post('/form', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' });
+        }
+
+        const loginQuery = fs.readFileSync(path.join(SQL_PATH, 'user/read_login.sql'), 'utf8');
+        const [results] = await db.query(loginQuery, [email]);
+
+        if (results.length === 0) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        const user = results[0];
+
+        if (user.password !== password) {
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        return res.status(200).json({ 
+            message: 'Login successful',
+            uid: user.uid
+        });
+
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ error: 'Error during login', details: e.message });
+    }
+});
+
+module.exports = router;

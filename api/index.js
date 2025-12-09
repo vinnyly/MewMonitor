@@ -44,6 +44,8 @@ if (INIT) {
     const dbInitRouter = require('./routes/db_init.js');
     app.use('/dev', dbInitRouter);
 }
+const signinRouter = require('./routes/sign_in.js');
+app.use('/signin', signinRouter);
 
 //API ROUTES (ENDPOINTS)
 
