@@ -1,1 +1,3 @@
--- todo: delete a user
+-- delete a user
+DELETE FROM `User`
+WHERE uid = ?;
