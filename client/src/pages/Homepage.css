@@ -70,7 +70,7 @@
 
 .table-header {
   display: grid;
-  grid-template-columns: 1fr 80px 150px 120px;
+  grid-template-columns: 1fr 80px 150px 200px;
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -84,7 +84,7 @@
 
 .table-row {
   display: grid;
-  grid-template-columns: 1fr 80px 150px 120px;
+  grid-template-columns: 1fr 80px 150px 200px;
   gap: 10px;
   align-items: center;
   padding: 6px 0;
@@ -97,16 +97,95 @@
   font-weight: 400;
 }
 
-.view-profile-button {
-  height: 30px;
+.table-row input {
+  padding: 4px 8px;
+  border: 1px solid #C6D1C7;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.table-row input:focus {
+  outline: none;
+  border-color: #234332;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.edit-button,
+.delete-button {
+  height: 32px;
   padding: 0 12px;
   border-radius: 5px;
   border: 1px solid #C6D1C7;
   background: white;
   color: #1F2A20;
   font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 15px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background: #F9FAF8;
+  border-color: #234332;
+}
+
+.delete-button {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.delete-button:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.save-edit-button,
+.cancel-edit-button {
+  height: 32px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid #C6D1C7;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.save-edit-button {
+  background: #234332;
+  border-color: #234332;
+  color: white;
+}
+
+.save-edit-button:hover {
+  background: #1a3326;
+}
+
+.cancel-edit-button {
+  background: white;
+  color: #1F2A20;
+}
+
+.cancel-edit-button:hover {
+  background: #F9FAF8;
+}
+
+.view-profile-button {
+  height: 32px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid #C6D1C7;
+  background: white;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 13px;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .view-profile-button:hover {

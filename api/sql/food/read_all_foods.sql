@@ -1,0 +1,1 @@
+SELECT fid, brand, name, `type`, calories, carbs, protein, fat FROM Food ORDER BY brand, name;

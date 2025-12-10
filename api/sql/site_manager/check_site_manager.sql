@@ -1,0 +1,1 @@
+SELECT uid FROM Site_Manager WHERE uid = ?;

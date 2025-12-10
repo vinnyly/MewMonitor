@@ -70,3 +70,7 @@ VALUES
 
 (4, 'Simba', 40, 104),
 (4, 'Simba', 40, 102);
+
+INSERT INTO Site_Manager (uid)
+VALUES
+(2);

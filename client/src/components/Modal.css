@@ -130,3 +130,253 @@
 .save-button:hover {
   background: #1a3326;
 }
+
+/* Food Data Modal */
+.food-data-modal {
+  width: 900px;
+  max-width: 95vw;
+  padding: 24px;
+}
+
+.food-data-modal h2 {
+  margin: 0 0 20px 0;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.food-table-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.food-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.food-data-table th,
+.food-data-table td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.food-data-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  position: sticky;
+  top: 0;
+}
+
+.food-data-table td {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.food-data-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.food-data-table input,
+.food-data-table select {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #C6D1C7;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.food-data-table input:focus,
+.food-data-table select:focus {
+  outline: none;
+  border-color: #234332;
+}
+
+.food-action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.food-action-buttons .edit-btn,
+.food-action-buttons .delete-btn,
+.food-action-buttons .save-btn,
+.food-action-buttons .cancel-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #C6D1C7;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.food-action-buttons .edit-btn {
+  background: white;
+  color: #1F2A20;
+}
+
+.food-action-buttons .edit-btn:hover {
+  background: #F9FAF8;
+  border-color: #234332;
+}
+
+.food-action-buttons .delete-btn {
+  background: white;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.food-action-buttons .delete-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.food-action-buttons .save-btn {
+  background: #234332;
+  color: white;
+  border-color: #234332;
+}
+
+.food-action-buttons .save-btn:hover {
+  background: #1a3326;
+}
+
+.food-action-buttons .cancel-btn {
+  background: white;
+  color: #1F2A20;
+}
+
+.food-action-buttons .cancel-btn:hover {
+  background: #F9FAF8;
+}
+
+/* Health Problems Data Modal */
+.health-problems-modal {
+  width: 700px;
+  max-width: 95vw;
+  padding: 24px;
+}
+
+.health-problems-modal h2 {
+  margin: 0 0 20px 0;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.health-table-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.health-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.health-data-table th,
+.health-data-table td {
+  padding: 10px 8px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.health-data-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  position: sticky;
+  top: 0;
+}
+
+.health-data-table td {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.health-data-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.health-data-table .edit-description-input {
+  width: 100%;
+  padding: 4px 6px;
+  border: 1px solid #C6D1C7;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.health-data-table .edit-description-input:focus {
+  outline: none;
+  border-color: #234332;
+}
+
+.health-action-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.health-action-buttons .edit-btn,
+.health-action-buttons .delete-btn,
+.health-action-buttons .save-btn,
+.health-action-buttons .cancel-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #C6D1C7;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.health-action-buttons .edit-btn {
+  background: white;
+  color: #1F2A20;
+}
+
+.health-action-buttons .edit-btn:hover {
+  background: #F9FAF8;
+  border-color: #234332;
+}
+
+.health-action-buttons .delete-btn {
+  background: white;
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.health-action-buttons .delete-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.health-action-buttons .save-btn {
+  background: #234332;
+  color: white;
+  border-color: #234332;
+}
+
+.health-action-buttons .save-btn:hover {
+  background: #1a3326;
+}
+
+.health-action-buttons .cancel-btn {
+  background: white;
+  color: #1F2A20;
+}
+
+.health-action-buttons .cancel-btn:hover {
+  background: #F9FAF8;
+}

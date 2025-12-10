@@ -65,6 +65,23 @@ const findMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_probl
 const readMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/read_med_problem.sql'), 'utf8');
 const updateMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/update_med_problem.sql'), 'utf8');
 
+// --- PRE-LOAD SITE MANAGER QUERIES ---
+const checkSiteManagerQuery = fs.readFileSync(path.join(SQL_PATH, 'site_manager/check_site_manager.sql'), 'utf8');
+
+// --- PRE-LOAD ALL FOODS QUERY ---
+const readAllFoodsQuery = fs.readFileSync(path.join(SQL_PATH, 'food/read_all_foods.sql'), 'utf8');
+
+
+
+//temp test route
+router.get('/testy', async (req, res) => {
+    try {
+        const [results] = await db.query(fs.readFileSync(path.join(SQL_PATH, 'init/temp.sql'), 'utf8'));
+        res.status(200).json(results);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
 
 // --- COMPLEX QUERY ROUTES ---
@@ -553,6 +570,35 @@ router.put('/med-problem/update', async (req, res) => {
         const { description, Mname } = req.body;
         await db.query(updateMedProblemQuery, [description, Mname]);
         res.status(200).json({ message: 'Medicinal problem updated successfully' });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// ==========================================
+//          SITE MANAGER ROUTES
+// ==========================================
+
+// Check if user is a site manager
+router.get('/site-manager/check', async (req, res) => {
+    try {
+        const { uid } = req.query;
+        const [results] = await db.query(checkSiteManagerQuery, [uid]);
+        res.status(200).json({ isSiteManager: results.length > 0 });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// ==========================================
+//          ALL FOODS ROUTE
+// ==========================================
+
+// Get All Foods
+router.get('/food/list', async (req, res) => {
+    try {
+        const [results] = await db.query(readAllFoodsQuery);
+        res.status(200).json(results);
     } catch (e) {
         res.status(500).json({ error: e.message });
     }

@@ -13,6 +13,12 @@ function Homepage({ onNavigate, medicinalProblems }) {
   const [newCatAge, setNewCatAge] = useState('');
   const [newCatWeight, setNewCatWeight] = useState('');
 
+  // Edit cat state
+  const [editingCatName, setEditingCatName] = useState(null); // Original name of cat being edited
+  const [editName, setEditName] = useState('');
+  const [editAge, setEditAge] = useState('');
+  const [editBreed, setEditBreed] = useState('');
+
   // Diagnosis & Diet Plan state
   const [selectedDiagnosis, setSelectedDiagnosis] = useState('');
   const [diagnosisPlans, setDiagnosisPlans] = useState([]);
@@ -22,20 +28,21 @@ function Homepage({ onNavigate, medicinalProblems }) {
 
   const uid = localStorage.getItem('uid');
 
+  // Refresh cat list
+  const refreshCats = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/temp/cat/list?uid=${uid}`);
+      const data = await response.json();
+      if (response.ok) {
+        setCats(data);
+      }
+    } catch (e) {
+      console.error('Failed to fetch cats:', e);
+    }
+  };
+
   // Fetch all cats for the logged-in user
   useEffect(() => {
-    const fetchCats = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/temp/cat/list?uid=${uid}`);
-        const data = await response.json();
-        if (response.ok) {
-          setCats(data);
-        }
-      } catch (e) {
-        console.error('Failed to fetch cats:', e);
-      }
-    };
-
     const fetchConditionsByAge = async () => {
       try {
         const response = await fetch('http://localhost:3000/temp/conditions-by-age');
@@ -49,7 +56,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     };
 
     if (uid) {
-      fetchCats();
+      refreshCats();
       fetchConditionsByAge();
     }
   }, [uid]);
@@ -107,11 +114,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
       }
 
       // Refresh the cat list
-      const listResponse = await fetch(`http://localhost:3000/temp/cat/list?uid=${uid}`);
-      const listData = await listResponse.json();
-      if (listResponse.ok) {
-        setCats(listData);
-      }
+      await refreshCats();
 
       // Clear form
       setNewCatName('');
@@ -122,6 +125,81 @@ function Homepage({ onNavigate, medicinalProblems }) {
     } catch (e) {
       setError('Unable to connect to server');
       console.error(e);
+    }
+  };
+
+  // Delete cat
+  const handleDeleteCat = async (catName) => {
+    if (!window.confirm(`Are you sure you want to delete ${catName}?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/temp/cat/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          uid: parseInt(uid),
+          name: catName,
+        }),
+      });
+
+      if (response.ok) {
+        await refreshCats();
+      }
+    } catch (e) {
+      console.error('Failed to delete cat:', e);
+    }
+  };
+
+  // Start editing a cat
+  const handleStartEdit = (cat) => {
+    setEditingCatName(cat.name);
+    setEditName(cat.name);
+    setEditAge(cat.age || '');
+    setEditBreed(cat.breed || '');
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingCatName(null);
+    setEditName('');
+    setEditAge('');
+    setEditBreed('');
+  };
+
+  // Save cat changes
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/temp/cat/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          uid: parseInt(uid),
+          name: editingCatName,
+          newName: editName || null,
+          age: editAge ? parseInt(editAge) : null,
+          breed: editBreed || null,
+        }),
+      });
+
+      if (response.ok) {
+        await refreshCats();
+        handleCancelEdit();
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Failed to update cat');
+      }
+    } catch (e) {
+      console.error('Failed to update cat:', e);
+      setError('Unable to connect to server');
+    }
+  };
+
+  // Handle Enter key for saving edit
+  const handleEditKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSaveEdit();
     }
   };
 
@@ -163,15 +241,48 @@ function Homepage({ onNavigate, medicinalProblems }) {
               ) : (
                 cats.map((cat, index) => (
                   <div className="table-row" key={index}>
-                    <span className="row-name">{cat.name}</span>
-                    <span className="row-age">{cat.age || '-'}</span>
-                    <span className="row-breed">{cat.breed || '-'}</span>
-                    <button 
-                      className="view-profile-button"
-                      onClick={() => handleViewProfile(cat)}
-                    >
-                      View Profile
-                    </button>
+                    {editingCatName === cat.name ? (
+                      <>
+                        <input 
+                          type="text" 
+                          value={editName} 
+                          onChange={(e) => setEditName(e.target.value)} 
+                          onKeyDown={handleEditKeyDown}
+                        />
+                        <input 
+                          type="number" 
+                          value={editAge} 
+                          onChange={(e) => setEditAge(e.target.value)} 
+                          onKeyDown={handleEditKeyDown}
+                        />
+                        <input 
+                          type="text" 
+                          value={editBreed} 
+                          onChange={(e) => setEditBreed(e.target.value)} 
+                          onKeyDown={handleEditKeyDown}
+                        />
+                        <div className="action-buttons">
+                          <button className="save-edit-button" onClick={handleSaveEdit}>Save Changes</button>
+                          <button className="cancel-edit-button" onClick={handleCancelEdit}>Cancel</button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <span className="row-name">{cat.name}</span>
+                        <span className="row-age">{cat.age || '-'}</span>
+                        <span className="row-breed">{cat.breed || '-'}</span>
+                        <div className="action-buttons">
+                          <button 
+                            className="view-profile-button"
+                            onClick={() => handleViewProfile(cat)}
+                          >
+                            View Profile
+                          </button>
+                          <button className="edit-button" onClick={() => handleStartEdit(cat)}>Edit</button>
+                          <button className="delete-button" onClick={() => handleDeleteCat(cat.name)}>Delete</button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))
               )}

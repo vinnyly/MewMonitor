@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS `Diet_Plan`;
 DROP TABLE IF EXISTS `Cat_Problem`;
 DROP TABLE IF EXISTS `Medicinal_Problem`;
 DROP TABLE IF EXISTS `Referenced_In`;
+DROP TABLE IF EXISTS `Site_Manager`;
 
 SET FOREIGN_KEY_CHECKS = 1;
 SET SESSION sql_mode = 'STRICT_ALL_TABLES';
@@ -116,4 +117,11 @@ CREATE TABLE Referenced_In ( -- rename Referenced_In to DP_Food (Diet Plan Food)
     PRIMARY KEY (uid, cname, dp_number, fid),
     FOREIGN KEY (uid, cname, dp_number) REFERENCES Diet_Plan(uid, cname, dp_number) ON DELETE CASCADE,
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
+);
+
+CREATE TABLE Site_Manager (
+    uid BIGINT UNSIGNED NOT NULL,
+    
+    PRIMARY KEY (uid),
+    FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE
 );

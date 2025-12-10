@@ -152,3 +152,16 @@
 .feeding-table tr:hover {
   background: #F9FAF8;
 }
+
+.food-buttons-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.health-buttons-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}

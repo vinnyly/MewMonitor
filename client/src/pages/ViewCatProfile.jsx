@@ -2,12 +2,17 @@ import { useState, useEffect } from 'react';
 import AddHealthProblem from '../components/AddHealthProblem';
 import AddNewFood from '../components/AddNewFood';
 import EditDietPlan from '../components/EditDietPlan';
+import FoodData from '../components/FoodData';
+import HealthProblemsData from '../components/HealthProblemsData';
 import './ViewCatProfile.css';
 
 function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   const [showHealthModal, setShowHealthModal] = useState(false);
   const [showFoodModal, setShowFoodModal] = useState(false);
   const [showDietModal, setShowDietModal] = useState(false);
+  const [showFoodDataModal, setShowFoodDataModal] = useState(false);
+  const [showHealthProblemsDataModal, setShowHealthProblemsDataModal] = useState(false);
+  const [isSiteManager, setIsSiteManager] = useState(false);
 
   // Cat data state
   const [catInfo, setCatInfo] = useState(null);
@@ -75,6 +80,13 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
 
     const fetchCatData = async () => {
       try {
+        // Check if user is a site manager
+        const siteManagerResponse = await fetch(`http://localhost:3000/temp/site-manager/check?uid=${uid}`);
+        const siteManagerData = await siteManagerResponse.json();
+        if (siteManagerResponse.ok) {
+          setIsSiteManager(siteManagerData.isSiteManager);
+        }
+
         // Fetch cat info
         const catResponse = await fetch(`http://localhost:3000/temp/cat/get?uid=${uid}&name=${cname}`);
         const catData = await catResponse.json();
@@ -319,9 +331,16 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
                 </div>
               ))
             )}
-            <button className="action-button" onClick={() => setShowHealthModal(true)}>
-              Add health Problem
-            </button>
+            <div className="health-buttons-row">
+              <button className="action-button" onClick={() => setShowHealthModal(true)}>
+                Add health Problem
+              </button>
+              {isSiteManager && (
+                <button className="action-button" onClick={() => setShowHealthProblemsDataModal(true)}>
+                  Health Problems
+                </button>
+              )}
+            </div>
           </section>
 
           <section className="profile-section">
@@ -408,9 +427,16 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
               )}
             </div>
 
-            <button className="action-button small" onClick={() => setShowFoodModal(true)}>
-              Food not listed? Add new food to catalog
-            </button>
+            <div className="food-buttons-row">
+              <button className="action-button small" onClick={() => setShowFoodModal(true)}>
+                Food not listed? Add new food to catalog
+              </button>
+              {isSiteManager && (
+                <button className="action-button small" onClick={() => setShowFoodDataModal(true)}>
+                  Food Data
+                </button>
+              )}
+            </div>
 
             <button className="save-entry-button" onClick={handleSaveFeedingEntry}>
               Save feeding entry
@@ -509,6 +535,18 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
           uid={uid}
           cname={cname}
           existingPlan={dietPlans[0]}
+        />
+      )}
+      {showFoodDataModal && (
+        <FoodData 
+          onClose={() => setShowFoodDataModal(false)}
+          isSiteManager={isSiteManager}
+        />
+      )}
+      {showHealthProblemsDataModal && (
+        <HealthProblemsData 
+          onClose={() => setShowHealthProblemsDataModal(false)}
+          isSiteManager={isSiteManager}
         />
       )}
     </div>
