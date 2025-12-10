@@ -1,0 +1,99 @@
+.signin-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #F5F5F5;
+}
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin-box {
+  width: 567px;
+  padding: 24px 27px;
+  background: white;
+  border-radius: 26px;
+  box-shadow: 4px 4px 20px 5px rgba(0, 0, 0, 0.25);
+}
+
+.signin-title {
+  color: #475048;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.signin-subtitle {
+  color: #5F6B63;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 25px 0;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-label {
+  display: block;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 512px;
+  height: 37px;
+  padding: 0 12px;
+  border-radius: 5px;
+  border: 1px solid #C6D1C7;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #234332;
+}
+
+.login-button {
+  width: 512px;
+  height: 37px;
+  background: #234332;
+  border: 1px solid #234332;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 26px;
+}
+
+.login-button:hover {
+  background: #1a3326;
+}
+
+.signup-link {
+  color: #5F6B63;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.signup-link a {
+  color: #54896D;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.signup-link a:hover {
+  color: #3d6b52;
+}

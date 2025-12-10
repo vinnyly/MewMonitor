@@ -456,7 +456,7 @@ router.put('/cat-problem/update', async (req, res) => {
 //      REFERENCED_IN (DIET PLAN FOODS)
 // ==========================================
 
-// Add Food to Plan
+// Add Food to Plan.   ASSUMING this query would be run alongside the related query that creates a diet plan?
 router.post('/diet-plan/add-food', async (req, res) => {
     try {
         const { uid, cname, dp_number, fid } = req.body;
@@ -532,6 +532,16 @@ router.get('/med-problem/get', async (req, res) => {
         const { Mname } = req.query;
         const [results] = await db.query(readMedProblemQuery, [Mname]);
         res.status(200).json(results[0]);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Get All Medicinal Problems (for dropdown)
+router.get('/med-problem/list', async (req, res) => {
+    try {
+        const [results] = await db.query('SELECT Mname, description FROM Medicinal_Problem ORDER BY Mname');
+        res.status(200).json(results);
     } catch (e) {
         res.status(500).json({ error: e.message });
     }

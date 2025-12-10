@@ -1,0 +1,72 @@
+.create-account-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #F5F5F5;
+}
+
+.create-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-account-box {
+  width: 466px;
+  padding: 23px 28px;
+  background: white;
+  border-radius: 26px;
+  box-shadow: 4px 4px 20px 5px rgba(0, 0, 0, 0.25);
+}
+
+.create-account-title {
+  color: #475048;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 11px 0;
+}
+
+.create-account-subtitle {
+  color: #5F6B63;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 20px 0;
+}
+
+.create-button {
+  width: 411px;
+  height: 37px;
+  background: #234332;
+  border: 1px solid #234332;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.create-button:hover {
+  background: #1a3326;
+}
+
+.login-link {
+  color: #5F6B63;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.login-link a {
+  color: #54896D;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-link a:hover {
+  color: #3d6b52;
+}

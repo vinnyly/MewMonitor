@@ -1,7 +1,7 @@
 -- insert food entry into database with minimum required info
 
 /* Parameters:
- * 1. fid (this must be generated ?)
+ * 1. fid (pass NULL to auto-generate)
  * 2. brand
  * 3. name
  * 4. type

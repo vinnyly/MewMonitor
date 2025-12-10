@@ -1,3 +1,3 @@
 -- remove feeds entry (requires full key)
 DELETE FROM Feeds
-WHERE uid = ?, cname = ?, fid = ?, feed_date = ?, feed_time = ?;
+WHERE uid = ? AND cname = ? AND fid = ? AND feed_date = ? AND feed_time = ?;

@@ -99,6 +99,9 @@ CREATE TABLE Feeds (
     feed_date DATE NOT NULL,
     feed_time TIME NOT NULL,
 
+    CONSTRAINT chk_feed_date CHECK (feed_date >= '1990-01-01' AND feed_date <= '2100-12-31'),
+    CONSTRAINT chk_feed_time CHECK (feed_time >= '00:00:00' AND feed_time <= '23:59:59'),
+
     PRIMARY KEY (uid, cname, fid, feed_date, feed_time),
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
     FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
