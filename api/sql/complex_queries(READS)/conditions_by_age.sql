@@ -1,10 +1,13 @@
--- Count Health Conditions by Age Group
-
+-- get top 5 most popular health conditions by age
+/* Parameters:
+ * 1. age (cat age)
+ */
 SELECT 
-    C.age, 
-    CP.pname AS Condition_Name, 
-    COUNT(*) AS Cases_Count
+    CP.pname AS Problem_Name,
+    COUNT(*) AS Frequency
 FROM Cat C
 JOIN Cat_Problem CP ON C.uid = CP.uid AND C.name = CP.cname
-GROUP BY C.age, CP.pname
-ORDER BY C.age ASC, Cases_Count DESC;
+WHERE C.age = ?
+GROUP BY CP.pname
+ORDER BY Frequency DESC
+LIMIT 5;

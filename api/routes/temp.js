@@ -64,6 +64,7 @@ const deleteMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_pro
 const findMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/find_med_problem.sql'), 'utf8');
 const readMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/read_med_problem.sql'), 'utf8');
 const updateMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/update_med_problem.sql'), 'utf8');
+const readAllMedProblemsQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/read_all_med_problems.sql'), 'utf8');
 
 // --- PRE-LOAD SITE MANAGER QUERIES ---
 const checkSiteManagerQuery = fs.readFileSync(path.join(SQL_PATH, 'site_manager/check_site_manager.sql'), 'utf8');
@@ -103,14 +104,14 @@ router.get('/nutritional-intake', async (req, res) => {
 });
 
 // 2. Cat Diagnosis Plan
-// Usage: GET /api/temp/diagnosis-plans?condition=Diabetes
+// Usage: GET /api/temp/diagnosis-plans?uid=1&condition=Diabetes
 router.get('/diagnosis-plans', async (req, res) => {
     try {
-        const { condition } = req.query;
-        if (!condition) {
-            return res.status(400).json({ error: 'Missing required parameter: condition' });
+        const { uid, condition } = req.query;
+        if (!uid || !condition) {
+            return res.status(400).json({ error: 'Missing required parameters: uid, condition' });
         }
-        const [results] = await db.query(diagnosisPlanQuery, [condition]);
+        const [results] = await db.query(diagnosisPlanQuery, [uid, condition]);
         res.status(200).json(results);
     } catch (e) {
         console.error(e);
@@ -119,10 +120,14 @@ router.get('/diagnosis-plans', async (req, res) => {
 });
 
 // 3. Conditions by Age
-// Usage: GET /api/temp/conditions-by-age
+// Usage: GET /api/temp/conditions-by-age?age=5
 router.get('/conditions-by-age', async (req, res) => {
     try {
-        const [results] = await db.query(conditionsByAgeQuery);
+        const { age } = req.query;
+        if (!age) {
+            return res.status(400).json({ error: 'Missing required parameter: age' });
+        }
+        const [results] = await db.query(conditionsByAgeQuery, [age]);
         res.status(200).json(results);
     } catch (e) {
         console.error(e);
@@ -557,7 +562,7 @@ router.get('/med-problem/get', async (req, res) => {
 // Get All Medicinal Problems (for dropdown)
 router.get('/med-problem/list', async (req, res) => {
     try {
-        const [results] = await db.query('SELECT Mname, description FROM Medicinal_Problem ORDER BY Mname');
+        const [results] = await db.query(readAllMedProblemsQuery);
         res.status(200).json(results);
     } catch (e) {
         res.status(500).json({ error: e.message });
