@@ -1,4 +1,4 @@
-import { useState } from 'react'; //include useEffect later
+import { useState, useEffect } from 'react';
 import SignIn from './pages/SignIn';
 import CreateAccount from './pages/CreateAccount';
 import Homepage from './pages/Homepage';
@@ -11,7 +11,28 @@ function App() {
     const savedUid = localStorage.getItem('uid');
     return savedUid ? 'homepage' : 'signin';
   });
-  const [selectedCat, setSelectedCat] = useState(null); // Store selected cat data
+  const [selectedCat, setSelectedCat] = useState(null);
+  const [medicinalProblems, setMedicinalProblems] = useState([]); // Cached medicinal problems
+
+  // Fetch medicinal problems once when app loads (if user is logged in)
+  useEffect(() => {
+    const fetchMedicinalProblems = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/temp/med-problem/list');
+        const data = await response.json();
+        if (response.ok) {
+          setMedicinalProblems(data);
+        }
+      } catch (e) {
+        console.error('Failed to fetch medicinal problems:', e);
+      }
+    };
+
+    const uid = localStorage.getItem('uid');
+    if (uid) {
+      fetchMedicinalProblems();
+    }
+  }, []);
 
   const navigate = (page, catData = null) => {
     if (catData) {
@@ -24,8 +45,19 @@ function App() {
     <div className="app">
       {currentPage === 'signin' && <SignIn onNavigate={navigate} />}
       {currentPage === 'signup' && <CreateAccount onNavigate={navigate} />}
-      {currentPage === 'homepage' && <Homepage onNavigate={navigate} />}
-      {currentPage === 'catprofile' && <ViewCatProfile onNavigate={navigate} cat={selectedCat} />}
+      {currentPage === 'homepage' && (
+        <Homepage 
+          onNavigate={navigate} 
+          medicinalProblems={medicinalProblems} 
+        />
+      )}
+      {currentPage === 'catprofile' && (
+        <ViewCatProfile 
+          onNavigate={navigate} 
+          cat={selectedCat} 
+          medicinalProblems={medicinalProblems}
+        />
+      )}
     </div>
   );
 }

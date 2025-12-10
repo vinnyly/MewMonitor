@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import GenderDropdown from '../components/GenderDropdown';
 import './Homepage.css';
 
-function Homepage({ onNavigate }) {
+function Homepage({ onNavigate, medicinalProblems }) {
   const [gender, setGender] = useState('');
   const [cats, setCats] = useState([]);
   const [error, setError] = useState('');
@@ -12,6 +12,13 @@ function Homepage({ onNavigate }) {
   const [newCatBreed, setNewCatBreed] = useState('');
   const [newCatAge, setNewCatAge] = useState('');
   const [newCatWeight, setNewCatWeight] = useState('');
+
+  // Diagnosis & Diet Plan state
+  const [selectedDiagnosis, setSelectedDiagnosis] = useState('');
+  const [diagnosisPlans, setDiagnosisPlans] = useState([]);
+
+  // Health Condition By Age state
+  const [conditionsByAge, setConditionsByAge] = useState([]);
 
   const uid = localStorage.getItem('uid');
 
@@ -29,10 +36,46 @@ function Homepage({ onNavigate }) {
       }
     };
 
+    const fetchConditionsByAge = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/temp/conditions-by-age');
+        const data = await response.json();
+        if (response.ok) {
+          setConditionsByAge(data);
+        }
+      } catch (e) {
+        console.error('Failed to fetch conditions by age:', e);
+      }
+    };
+
     if (uid) {
       fetchCats();
+      fetchConditionsByAge();
     }
   }, [uid]);
+
+  // Fetch diagnosis plans when a diagnosis is selected
+  const handleDiagnosisChange = async (diagnosis) => {
+    setSelectedDiagnosis(diagnosis);
+    
+    if (!diagnosis) {
+      setDiagnosisPlans([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/temp/diagnosis-plans?condition=${encodeURIComponent(diagnosis)}`);
+      const data = await response.json();
+      if (response.ok) {
+        setDiagnosisPlans(data);
+      } else {
+        setDiagnosisPlans([]);
+      }
+    } catch (e) {
+      console.error('Failed to fetch diagnosis plans:', e);
+      setDiagnosisPlans([]);
+    }
+  };
 
   const handleAddCat = async () => {
     setError('');
@@ -83,7 +126,6 @@ function Homepage({ onNavigate }) {
   };
 
   const handleViewProfile = (cat) => {
-    // Pass cat data to the profile page
     onNavigate('catprofile', { uid: uid, name: cat.name });
   };
 
@@ -188,6 +230,90 @@ function Homepage({ onNavigate }) {
             <button className="save-cat-button" onClick={handleAddCat}>
               Save Cat
             </button>
+          </div>
+
+          <div className="diagnosis-section">
+            <h2 className="section-title">Current Diet Plans for Health Conditions</h2>
+            
+            <div className="form-group">
+              <label className="form-label">Select Health Condition</label>
+              <select 
+                className="form-input"
+                value={selectedDiagnosis}
+                onChange={(e) => handleDiagnosisChange(e.target.value)}
+              >
+                <option value="">Select a condition</option>
+                {medicinalProblems.map((problem) => (
+                  <option key={problem.Mname} value={problem.Mname}>
+                    {problem.Mname}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {selectedDiagnosis && (
+              <div className="diagnosis-results">
+                <table className="diagnosis-table">
+                  <thead>
+                    <tr>
+                      <th>Cat Name</th>
+                      <th>Health Condition</th>
+                      <th>Feeding Interval</th>
+                      <th>Feeding Portion</th>
+                      <th>Diet Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {diagnosisPlans.length === 0 ? (
+                      <tr>
+                        <td colSpan="5">No cats found with this condition or no diet plans set.</td>
+                      </tr>
+                    ) : (
+                      diagnosisPlans.map((plan, index) => (
+                        <tr key={index}>
+                          <td>{plan.Cat_Name}</td>
+                          <td>{plan.Diagnosis}</td>
+                          <td>{plan.feeding_interval ? `${plan.feeding_interval} meals/day` : '-'}</td>
+                          <td>{plan.feeding_portion ? `${plan.feeding_portion}g` : '-'}</td>
+                          <td>{plan.Diet_Description || '-'}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div className="diagnosis-section">
+            <h2 className="section-title">Health Condition By Age</h2>
+            
+            <div className="diagnosis-results">
+              <table className="diagnosis-table">
+                <thead>
+                  <tr>
+                    <th>Age</th>
+                    <th>Condition Name</th>
+                    <th>Cases Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {conditionsByAge.length === 0 ? (
+                    <tr>
+                      <td colSpan="3">No health condition data available.</td>
+                    </tr>
+                  ) : (
+                    conditionsByAge.map((row, index) => (
+                      <tr key={index}>
+                        <td>{row.age || '-'}</td>
+                        <td>{row.Condition_Name}</td>
+                        <td>{row.Cases_Count}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
