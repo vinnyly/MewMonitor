@@ -1,0 +1,154 @@
+.cat-profile-page {
+  min-height: 100vh;
+  background-color: #F5F5F5;
+  padding: 31px 45px;
+}
+
+.back-button {
+  height: 29px;
+  padding: 0 16px;
+  background: #234332;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.back-button:hover {
+  background: #1a3326;
+}
+
+.profile-content {
+  max-width: 1234px;
+}
+
+.profile-box {
+  background: white;
+  border-radius: 26px;
+  box-shadow: 4px 4px 20px 5px rgba(0, 0, 0, 0.25);
+  padding: 32px 29px;
+}
+
+.cat-name {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.cat-info {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0 0 31px 0;
+}
+
+.profile-section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 14px 0;
+}
+
+.section-text {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0 0 14px 0;
+  line-height: 1.5;
+}
+
+.health-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  margin-bottom: 14px;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  border-radius: 20px;
+  background: #F0F0F0;
+}
+
+.health-tag-bold {
+  font-weight: 700;
+}
+
+.action-button {
+  height: 29px;
+  padding: 0 12px;
+  border-radius: 5px;
+  border: 1px solid #C6D1C7;
+  background: white;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 8px;
+}
+
+.action-button.small {
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.action-button:hover {
+  background: #F9FAF8;
+  border-color: #234332;
+}
+
+.save-entry-button {
+  width: 100%;
+  height: 37px;
+  background: #234332;
+  border: 1px solid #234332;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 24px;
+}
+
+.save-entry-button:hover {
+  background: #1a3326;
+}
+
+.feeding-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.feeding-table th {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: left;
+  padding: 12px 8px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.feeding-table td {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 12px 8px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.feeding-table tr:hover {
+  background: #F9FAF8;
+}

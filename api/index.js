@@ -1,4 +1,4 @@
-const INIT = true; // TEMP: Set to true to enable DB initialization route
+const INIT = false; // TEMP: Set to true to enable DB initialization route
 /**
  * API SETUP (RARELY TOUCH THIS)
  */
@@ -46,6 +46,10 @@ if (INIT) {
 }
 const signinRouter = require('./routes/sign_in.js');
 app.use('/signin', signinRouter);
+
+// TEMP ROUTER (For complex queries)
+const tempRouter = require('./routes/temp.js');
+app.use('/temp', tempRouter);
 
 //API ROUTES (ENDPOINTS)
 

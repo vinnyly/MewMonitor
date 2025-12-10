@@ -1,1 +1,1 @@
--- todo: update medicinal problem in db
+UPDATE Medicinal_Problem SET description = ? WHERE Mname = ?;

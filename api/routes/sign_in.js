@@ -6,8 +6,16 @@ const fs = require('fs');           // File system tool to read files
 const path = require('path');       // Path tool to handle file paths
 const SQL_PATH = require('../index.js').SQL_PATH; // import SQL folder path
 
-router.get('/', async (req, res) => { // 
-    // todo return signin page
+// Pre-load SQL query at startup for efficiency
+const loginQuery = fs.readFileSync(path.join(SQL_PATH, 'user/read_login.sql'), 'utf8');
+
+router.get('/', async (req, res) => {
+    // Return a simple message (frontend handles the actual page)
+    res.status(200).json({ message: 'Sign in endpoint ready' });
+});
+
+router.post('/uh', async (req, res) => {
+    //another route to return signin??? what that mean
 });
 
 router.post('/form', async (req, res) => {
@@ -18,7 +26,6 @@ router.post('/form', async (req, res) => {
             return res.status(400).json({ error: 'Email and password are required' });
         }
 
-        const loginQuery = fs.readFileSync(path.join(SQL_PATH, 'user/read_login.sql'), 'utf8');
         const [results] = await db.query(loginQuery, [email]);
 
         if (results.length === 0) {

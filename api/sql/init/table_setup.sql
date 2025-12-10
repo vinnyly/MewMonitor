@@ -47,7 +47,7 @@ CREATE TABLE Diet_Plan (
     uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
     dp_number INT UNSIGNED NOT NULL AUTO_INCREMENT, 
-    feepding_interval INT UNSIGNED NOT NULL,
+    feeding_interval INT UNSIGNED NOT NULL,
     feeding_portion INT UNSIGNED,
     description VARCHAR(1024),
 
@@ -80,7 +80,7 @@ CREATE TABLE Food (
     fid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     brand VARCHAR(64),
     name VARCHAR(64) NOT NULL,
-    type CHAR(5),
+    `type` CHAR(5),
     calories DECIMAL(6, 2),
     carbs DECIMAL(6, 2),
     protein DECIMAL(6, 2),
@@ -98,6 +98,9 @@ CREATE TABLE Feeds (
     fid BIGINT UNSIGNED NOT NULL,
     feed_date DATE NOT NULL,
     feed_time TIME NOT NULL,
+
+    CONSTRAINT chk_feed_date CHECK (feed_date >= '1990-01-01' AND feed_date <= '2100-12-31'),
+    CONSTRAINT chk_feed_time CHECK (feed_time >= '00:00:00' AND feed_time <= '23:59:59'),
 
     PRIMARY KEY (uid, cname, fid, feed_date, feed_time),
     FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,

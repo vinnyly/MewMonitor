@@ -1,1 +1,1 @@
--- todo: insert medicinal problem into db
+INSERT INTO Medicinal_Problem (Mname, description) VALUES (?, ?);

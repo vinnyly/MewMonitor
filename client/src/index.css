@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-green: #234332;
+  --border-color: #C6D1C7;
+  --text-dark: #1F2A20;
+  --text-medium: #475048;
+  --text-light: #5F6B63;
+  --accent-green: #54896D;
+  --white: #FFF;
+  --light-bg: #F9FAF8;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F5F5F5;
+  min-height: 100vh;
+}
+
+button {
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
