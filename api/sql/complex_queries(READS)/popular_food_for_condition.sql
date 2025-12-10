@@ -3,12 +3,14 @@
  * 1. pname (condition name)
  */
 SELECT 
-    CP.pname,
-    FD.brand, 
-    COUNT(*) AS popularity_count
+    F.brand,
+    COUNT(DISTINCT CP.uid, CP.cname) AS popularity_count -- uses distinct so data isn't skewed by multiple feeding entries
 FROM Cat_Problem CP
-JOIN Feeds F ON CP.uid = F.uid AND CP.cname = F.cname
-JOIN Food FD ON F.fid = FD.fid
-WHERE CP.pname = ?
-GROUP BY FD.brand
-ORDER BY popularity_count DESC;
+    JOIN Feeds FD ON CP.uid = FD.uid AND CP.cname = FD.cname
+    JOIN Food F ON FD.fid = F.fid
+WHERE 
+    CP.pname = ?
+GROUP BY 
+    F.brand
+ORDER BY 
+    popularity_count DESC;
