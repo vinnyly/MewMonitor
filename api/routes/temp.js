@@ -102,10 +102,14 @@ router.get('/diagnosis-plans', async (req, res) => {
 });
 
 // 3. Conditions by Age
-// Usage: GET /api/temp/conditions-by-age
+// Usage: GET /api/temp/conditions-by-age?age=5
 router.get('/conditions-by-age', async (req, res) => {
     try {
-        const [results] = await db.query(conditionsByAgeQuery);
+        const { age } = req.query;
+        if (!age) {
+            return res.status(400).json({ error: 'Missing required parameter: age' });
+        }
+        const [results] = await db.query(conditionsByAgeQuery, [age]);
         res.status(200).json(results);
     } catch (e) {
         console.error(e);

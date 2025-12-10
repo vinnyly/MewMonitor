@@ -18,6 +18,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
   const [diagnosisPlans, setDiagnosisPlans] = useState([]);
 
   // Health Condition By Age state
+  const [selectedAge, setSelectedAge] = useState('');
   const [conditionsByAge, setConditionsByAge] = useState([]);
 
   const uid = localStorage.getItem('uid');
@@ -132,6 +133,28 @@ function Homepage({ onNavigate, medicinalProblems }) {
   const handleLogout = () => {
     localStorage.removeItem('uid');
     onNavigate('signin');
+  };
+
+  const handleConditionsByAgeChange = async (age) => {
+    setSelectedAge(age);
+    
+    if (!age) {
+      setConditionsByAge([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/temp/conditions-by-age?age=${age}`);
+      const data = await response.json();
+      if (response.ok) {
+        setConditionsByAge(data);
+      } else {
+        setConditionsByAge([]);
+      }
+    } catch (e) {
+      console.error('Failed to fetch conditions by age:', e);
+      setConditionsByAge([]);
+    }
   };
 
   return (
@@ -288,26 +311,37 @@ function Homepage({ onNavigate, medicinalProblems }) {
           <div className="diagnosis-section">
             <h2 className="section-title">Health Condition By Age</h2>
             
+            <div className="form-group">
+              <label className="form-label">Enter Cat Age (years)</label>
+              <input 
+                type="number"
+                className="form-input"
+                placeholder="e.g., 5"
+                value={selectedAge}
+                onChange={(e) => handleConditionsByAgeChange(e.target.value)}
+                min="1"
+                max="50"
+              />
+            </div>
+            
             <div className="diagnosis-results">
               <table className="diagnosis-table">
                 <thead>
                   <tr>
-                    <th>Age</th>
                     <th>Condition Name</th>
-                    <th>Cases Count</th>
+                    <th>Frequency</th>
                   </tr>
                 </thead>
                 <tbody>
                   {conditionsByAge.length === 0 ? (
                     <tr>
-                      <td colSpan="3">No health condition data available.</td>
+                      <td colSpan="2">Enter an age to see top 5 health conditions.</td>
                     </tr>
                   ) : (
                     conditionsByAge.map((row, index) => (
                       <tr key={index}>
-                        <td>{row.age || '-'}</td>
-                        <td>{row.Condition_Name}</td>
-                        <td>{row.Cases_Count}</td>
+                        <td>{row.Problem_Name}</td>
+                        <td>{row.Frequency}</td>
                       </tr>
                     ))
                   )}
