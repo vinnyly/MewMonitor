@@ -250,8 +250,10 @@ router.get('/cat/list', async (req, res) => {
 // Update Cat
 router.put('/cat/update', async (req, res) => {
     try {
-        const { weight, breed, age, gender, uid, name } = req.body;
-        await db.query(updateCatQuery, [weight, breed, age, gender, uid, name]);
+        const { uid, name, newName, weight, breed, age, gender } = req.body;
+        // Use newName if provided, otherwise keep the same name
+        const updatedName = newName || name;
+        await db.query(updateCatQuery, [updatedName, weight, breed, age, gender, uid, name]);
         res.status(200).json({ message: 'Cat updated successfully' });
     } catch (e) {
         res.status(500).json({ error: e.message });

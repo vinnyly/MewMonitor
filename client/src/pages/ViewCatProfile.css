@@ -2,6 +2,44 @@
   min-height: 100vh;
   background-color: #F5F5F5;
   padding: 31px 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  width: 100%;
+  max-width: 1234px;
+  height: 62px;
+  background: #234332;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 29px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.header-logo {
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-name {
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .back-button {
@@ -20,8 +58,25 @@
   background: #1a3326;
 }
 
+.logout-button {
+  height: 29px;
+  padding: 0 16px;
+  background: #234332;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.logout-button:hover {
+  background: #1a3326;
+}
+
 .profile-content {
   max-width: 1234px;
+  width: 100%;
 }
 
 .profile-box {
@@ -29,6 +84,8 @@
   border-radius: 26px;
   box-shadow: 4px 4px 20px 5px rgba(0, 0, 0, 0.25);
   padding: 32px 29px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .cat-name {
@@ -49,6 +106,7 @@
 
 .profile-section {
   margin-bottom: 40px;
+  overflow-x: auto;
 }
 
 .section-title {
@@ -126,8 +184,10 @@
 
 .feeding-table {
   width: 100%;
+  min-width: 400px;
   border-collapse: collapse;
   margin-top: 16px;
+  table-layout: auto;
 }
 
 .feeding-table th {

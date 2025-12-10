@@ -6,6 +6,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
   const [gender, setGender] = useState('');
   const [cats, setCats] = useState([]);
   const [error, setError] = useState('');
+  const [userName, setUserName] = useState('');
   
   // Form state for adding a new cat
   const [newCatName, setNewCatName] = useState('');
@@ -18,6 +19,8 @@ function Homepage({ onNavigate, medicinalProblems }) {
   const [editName, setEditName] = useState('');
   const [editAge, setEditAge] = useState('');
   const [editBreed, setEditBreed] = useState('');
+  const [editWeight, setEditWeight] = useState('');
+  const [editGender, setEditGender] = useState('');
 
   // Diagnosis & Diet Plan state
   const [selectedDiagnosis, setSelectedDiagnosis] = useState('');
@@ -60,9 +63,22 @@ function Homepage({ onNavigate, medicinalProblems }) {
       }
     };
 
+    const fetchUserName = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/signin/profile?uid=${uid}`);
+        const data = await response.json();
+        if (response.ok && data.name) {
+          setUserName(data.name);
+        }
+      } catch (e) {
+        console.error('Failed to fetch user name:', e);
+      }
+    };
+
     if (uid) {
       refreshCats();
       fetchConditionsByAge();
+      fetchUserName();
     }
   }, [uid]);
 
@@ -163,6 +179,8 @@ function Homepage({ onNavigate, medicinalProblems }) {
     setEditName(cat.name);
     setEditAge(cat.age || '');
     setEditBreed(cat.breed || '');
+    setEditWeight(cat.weight || '');
+    setEditGender(cat.gender || '');
   };
 
   // Cancel editing
@@ -171,6 +189,8 @@ function Homepage({ onNavigate, medicinalProblems }) {
     setEditName('');
     setEditAge('');
     setEditBreed('');
+    setEditWeight('');
+    setEditGender('');
   };
 
   // Save cat changes
@@ -185,6 +205,8 @@ function Homepage({ onNavigate, medicinalProblems }) {
           newName: editName || null,
           age: editAge ? parseInt(editAge) : null,
           breed: editBreed || null,
+          weight: editWeight ? parseFloat(editWeight) : null,
+          gender: editGender || null,
         }),
       });
 
@@ -265,9 +287,12 @@ function Homepage({ onNavigate, medicinalProblems }) {
     <div className="homepage">
       <header className="header">
         <h1 className="header-logo">MewMonitor</h1>
-        <button className="logout-button" onClick={handleLogout}>
-          Log Out
-        </button>
+        <div className="header-right">
+          {userName && <span className="user-name">{userName}</span>}
+          <button className="logout-button" onClick={handleLogout}>
+            Log Out
+          </button>
+        </div>
       </header>
 
       <div className="homepage-content">
@@ -279,6 +304,8 @@ function Homepage({ onNavigate, medicinalProblems }) {
               <div className="table-header">
                 <span className="header-name">Name</span>
                 <span className="header-age">Age</span>
+                <span className="header-weight">Weight (lb)</span>
+                <span className="header-gender">Gender</span>
                 <span className="header-breed">Breed</span>
                 <span className="header-actions">Actions</span>
               </div>
@@ -305,13 +332,20 @@ function Homepage({ onNavigate, medicinalProblems }) {
                           onKeyDown={handleEditKeyDown}
                         />
                         <input 
+                          type="number" 
+                          value={editWeight} 
+                          onChange={(e) => setEditWeight(e.target.value)} 
+                          onKeyDown={handleEditKeyDown}
+                        />
+                        <GenderDropdown value={editGender} onChange={setEditGender} />
+                        <input 
                           type="text" 
                           value={editBreed} 
                           onChange={(e) => setEditBreed(e.target.value)} 
                           onKeyDown={handleEditKeyDown}
                         />
                         <div className="action-buttons">
-                          <button className="save-edit-button" onClick={handleSaveEdit}>Save Changes</button>
+                          <button className="save-edit-button" onClick={handleSaveEdit}>Save</button>
                           <button className="cancel-edit-button" onClick={handleCancelEdit}>Cancel</button>
                         </div>
                       </>
@@ -319,6 +353,8 @@ function Homepage({ onNavigate, medicinalProblems }) {
                       <>
                         <span className="row-name">{cat.name}</span>
                         <span className="row-age">{cat.age || '-'}</span>
+                        <span className="row-weight">{cat.weight || '-'}</span>
+                        <span className="row-gender">{cat.gender || '-'}</span>
                         <span className="row-breed">{cat.breed || '-'}</span>
                         <div className="action-buttons">
                           <button 
@@ -374,7 +410,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Weight</label>
+              <label className="form-label">Weight (lb)</label>
               <input 
                 type="text" 
                 className="form-input" 

@@ -9,6 +9,15 @@ function GenderDropdown({ value, onChange }) {
     setIsOpen(false);
   };
 
+  // Convert stored value to display label
+  const getDisplayLabel = (val) => {
+    if (val === 'F') return 'Female';
+    if (val === 'M') return 'Male';
+    return null;
+  };
+
+  const displayValue = getDisplayLabel(value);
+
   return (
     <div className="gender-dropdown">
       <label className="dropdown-label">Gender</label>
@@ -18,8 +27,8 @@ function GenderDropdown({ value, onChange }) {
           onClick={() => setIsOpen(!isOpen)}
           type="button"
         >
-          <span className={value ? "dropdown-text-selected" : "dropdown-text-placeholder"}>
-            {value || 'Select Gender'}
+          <span className={displayValue ? "dropdown-text-selected" : "dropdown-text-placeholder"}>
+            {displayValue || 'Select Gender'}
           </span>
           <svg 
             className={`dropdown-chevron ${isOpen ? 'open' : ''}`}

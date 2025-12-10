@@ -41,7 +41,7 @@ CREATE TABLE Cat (
     CONSTRAINT chk_age CHECK(age BETWEEN 1 AND 50),
     CONSTRAINT chk_gender CHECK(gender='M' OR gender='F'),
     PRIMARY KEY (uid, name),
-    FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE
+    FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Diet_Plan (
@@ -52,8 +52,9 @@ CREATE TABLE Diet_Plan (
     feeding_portion INT UNSIGNED,
     description VARCHAR(1024),
 
+    KEY (dp_number),
     PRIMARY KEY(uid, cname, dp_number), 
-    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Medicinal_Problem (
@@ -73,8 +74,8 @@ CREATE TABLE Cat_Problem (
 
     CONSTRAINT chk_severity CHECK (severity IN ('Low', 'Moderate', 'Severe')),
     PRIMARY KEY (uid, cname, pname),
-    FOREIGN KEY (uid, cname) REFERENCES Cat(uid,name) ON DELETE CASCADE,
-    FOREIGN KEY (pname) REFERENCES Medicinal_Problem(Mname) ON DELETE CASCADE
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid,name) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (pname) REFERENCES Medicinal_Problem(Mname) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Food (
@@ -104,8 +105,8 @@ CREATE TABLE Feeds (
     CONSTRAINT chk_feed_time CHECK (feed_time >= '00:00:00' AND feed_time <= '23:59:59'),
 
     PRIMARY KEY (uid, cname, fid, feed_date, feed_time),
-    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE,
-    FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
+    FOREIGN KEY (uid, cname) REFERENCES Cat(uid, name) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Referenced_In ( -- rename Referenced_In to DP_Food (Diet Plan Food)?
@@ -115,13 +116,13 @@ CREATE TABLE Referenced_In ( -- rename Referenced_In to DP_Food (Diet Plan Food)
     fid BIGINT UNSIGNED NOT NULL,
 
     PRIMARY KEY (uid, cname, dp_number, fid),
-    FOREIGN KEY (uid, cname, dp_number) REFERENCES Diet_Plan(uid, cname, dp_number) ON DELETE CASCADE,
-    FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE
+    FOREIGN KEY (uid, cname, dp_number) REFERENCES Diet_Plan(uid, cname, dp_number) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (fid) REFERENCES Food(fid) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Site_Manager (
     uid BIGINT UNSIGNED NOT NULL,
     
     PRIMARY KEY (uid),
-    FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE
+    FOREIGN KEY (uid) REFERENCES `User`(uid) ON DELETE CASCADE ON UPDATE CASCADE
 );

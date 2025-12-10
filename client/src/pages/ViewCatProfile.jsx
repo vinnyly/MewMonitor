@@ -32,6 +32,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
 
   const uid = cat?.uid || localStorage.getItem('uid');
   const cname = cat?.name;
+  const [userName, setUserName] = useState('');
 
   // Fetch nutritional intake
   const fetchNutritionalIntake = async () => {
@@ -78,6 +79,18 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   useEffect(() => {
     if (!uid || !cname) return;
 
+    const fetchUserName = async () => {
+      try {
+        const userResponse = await fetch(`http://localhost:3000/signin/profile?uid=${uid}`);
+        const userData = await userResponse.json();
+        if (userResponse.ok && userData.name) {
+          setUserName(userData.name);
+        }
+      } catch (e) {
+        console.error('Failed to fetch user name:', e);
+      }
+    };
+
     const fetchCatData = async () => {
       try {
         // Check if user is a site manager
@@ -118,6 +131,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
       }
     };
 
+    fetchUserName();
     fetchCatData();
   }, [uid, cname]);
 
@@ -290,9 +304,12 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
           Back
         </button>
         <h1 className="header-logo">MewMonitor</h1>
-        <button className="logout-button" onClick={handleLogout}>
-          Log Out
-        </button>
+        <div className="header-right">
+          {userName && <span className="user-name">{userName}</span>}
+          <button className="logout-button" onClick={handleLogout}>
+            Log Out
+          </button>
+        </div>
       </header>
 
       <div className="profile-content">

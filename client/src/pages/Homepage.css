@@ -2,6 +2,9 @@
   min-height: 100vh;
   background-color: #F5F5F5;
   padding: 32px 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .header {
@@ -15,6 +18,7 @@
   justify-content: space-between;
   padding: 0 29px;
   margin-bottom: 16px;
+  box-sizing: border-box;
 }
 
 .header-logo {
@@ -23,6 +27,19 @@
   font-size: 24px;
   font-weight: 700;
   margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-name {
+  color: white;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .logout-button {
@@ -43,6 +60,7 @@
 
 .homepage-content {
   max-width: 1234px;
+  width: 100%;
 }
 
 .homepage-box {
@@ -51,8 +69,10 @@
   box-shadow: 4px 4px 20px 5px rgba(0, 0, 0, 0.25);
   padding: 25px 29px 30px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 70px;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .section-title {
@@ -65,13 +85,14 @@
 
 .cats-section {
   border-right: 1px solid #E5E5E5;
-  padding-right: 40px;
+  padding-right: 20px;
+  overflow-x: auto;
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 1fr 80px 150px 200px;
-  gap: 10px;
+  grid-template-columns: minmax(100px, 1fr) 50px 80px 70px minmax(100px, 1fr) minmax(200px, auto);
+  gap: 12px;
   margin-bottom: 14px;
 }
 
@@ -84,8 +105,8 @@
 
 .table-row {
   display: grid;
-  grid-template-columns: 1fr 80px 150px 200px;
-  gap: 10px;
+  grid-template-columns: minmax(100px, 1fr) 50px 80px 70px minmax(100px, 1fr) minmax(200px, auto);
+  gap: 12px;
   align-items: center;
   padding: 6px 0;
 }
@@ -195,6 +216,7 @@
 
 .add-cat-section {
   padding-left: 0;
+  min-width: 0;
 }
 
 .save-cat-button {
@@ -214,12 +236,22 @@
   background: #1a3326;
 }
 
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Diagnosis Section */
 .diagnosis-section {
   grid-column: 1 / -1;
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid #E5E5E5;
+  overflow-x: auto;
 }
 
 .diagnosis-results {
@@ -229,8 +261,10 @@
 
 .diagnosis-table {
   width: 100%;
+  min-width: 400px;
   border-collapse: collapse;
   font-size: 14px;
+  table-layout: auto;
 }
 
 .diagnosis-table th,

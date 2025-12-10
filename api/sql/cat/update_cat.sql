@@ -1,4 +1,4 @@
--- update a cat (can update all values except uid and name)
+-- update a cat (can update all values except uid)
 UPDATE Cat
-SET weight = ?, breed = ?, age = ?, gender = ?
+SET name = ?, weight = ?, breed = ?, age = ?, gender = ?
 WHERE uid = ? AND name = ?;

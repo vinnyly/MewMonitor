@@ -8,10 +8,34 @@ const SQL_PATH = require('../index.js').SQL_PATH; // import SQL folder path
 
 // Pre-load SQL query at startup for efficiency
 const loginQuery = fs.readFileSync(path.join(SQL_PATH, 'user/read_login.sql'), 'utf8');
+const profileQuery = fs.readFileSync(path.join(SQL_PATH, 'user/read_user_profile.sql'), 'utf8');
 
 router.get('/', async (req, res) => {
     // Return a simple message (frontend handles the actual page)
     res.status(200).json({ message: 'Sign in endpoint ready' });
+});
+
+router.get('/profile', async (req, res) => {
+    try {
+        const { uid } = req.query;
+
+        if (!uid) {
+            return res.status(400).json({ error: 'User ID is required' });
+        }
+
+        const [results] = await db.query(profileQuery, [uid]);
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const user = results[0];
+        return res.status(200).json({ name: user.name });
+
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ error: 'Error fetching user profile', details: e.message });
+    }
 });
 
 router.post('/uh', async (req, res) => {
