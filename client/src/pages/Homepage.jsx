@@ -21,6 +21,10 @@ function Homepage({ onNavigate, medicinalProblems }) {
   const [selectedAge, setSelectedAge] = useState('');
   const [conditionsByAge, setConditionsByAge] = useState([]);
 
+  // Popular Food by Condition state
+  const [selectedCondition, setSelectedCondition] = useState('');
+  const [popularFoods, setPopularFoods] = useState([]);
+
   const uid = localStorage.getItem('uid');
 
   // Fetch all cats for the logged-in user
@@ -154,6 +158,28 @@ function Homepage({ onNavigate, medicinalProblems }) {
     } catch (e) {
       console.error('Failed to fetch conditions by age:', e);
       setConditionsByAge([]);
+    }
+  };
+
+  const handlePopularFoodChange = async (condition) => {
+    setSelectedCondition(condition);
+    
+    if (!condition) {
+      setPopularFoods([]);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/temp/popular-food?condition=${encodeURIComponent(condition)}`);
+      const data = await response.json();
+      if (response.ok) {
+        setPopularFoods(data);
+      } else {
+        setPopularFoods([]);
+      }
+    } catch (e) {
+      console.error('Failed to fetch popular food:', e);
+      setPopularFoods([]);
     }
   };
 
@@ -348,6 +374,53 @@ function Homepage({ onNavigate, medicinalProblems }) {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div className="diagnosis-section">
+            <h2 className="section-title">Popular Food Brands by Condition</h2>
+            
+            <div className="form-group">
+              <label className="form-label">Select Health Condition</label>
+              <select 
+                className="form-input"
+                value={selectedCondition}
+                onChange={(e) => handlePopularFoodChange(e.target.value)}
+              >
+                <option value="">Select a condition</option>
+                {medicinalProblems.map((problem) => (
+                  <option key={problem.Mname} value={problem.Mname}>
+                    {problem.Mname}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {selectedCondition && (
+              <div className="diagnosis-results">
+                <table className="diagnosis-table">
+                  <thead>
+                    <tr>
+                      <th>Food Brand</th>
+                      <th>Popularity Count</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {popularFoods.length === 0 ? (
+                      <tr>
+                        <td colSpan="2">No food brands found for this condition.</td>
+                      </tr>
+                    ) : (
+                      popularFoods.map((food, index) => (
+                        <tr key={index}>
+                          <td>{food.brand || '-'}</td>
+                          <td>{food.popularity_count}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </div>
