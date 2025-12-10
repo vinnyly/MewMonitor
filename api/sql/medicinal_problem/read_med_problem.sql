@@ -1,1 +1,1 @@
--- todo: get one medicinal problem
+SELECT * FROM Medicinal_Problem WHERE Mname = ?;

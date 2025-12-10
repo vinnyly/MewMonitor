@@ -1,1 +1,1 @@
--- todo: delete medicinal problem
+DELETE FROM Medicinal_Problem WHERE Mname = ?;

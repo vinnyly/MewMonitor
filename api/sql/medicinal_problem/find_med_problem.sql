@@ -1,1 +1,1 @@
--- todo: get all medicinal problems with a LIKE name
+SELECT * FROM Medicinal_Problem WHERE Mname LIKE CONCAT('%', ?, '%');
