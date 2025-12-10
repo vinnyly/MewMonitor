@@ -47,7 +47,7 @@ CREATE TABLE Diet_Plan (
     uid BIGINT UNSIGNED NOT NULL,
     cname VARCHAR(64) NOT NULL,
     dp_number INT UNSIGNED NOT NULL AUTO_INCREMENT, 
-    feepding_interval INT UNSIGNED NOT NULL,
+    feeding_interval INT UNSIGNED NOT NULL,
     feeding_portion INT UNSIGNED,
     description VARCHAR(1024),
 
@@ -80,7 +80,7 @@ CREATE TABLE Food (
     fid BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     brand VARCHAR(64),
     name VARCHAR(64) NOT NULL,
-    type CHAR(5),
+    `type` CHAR(5),
     calories DECIMAL(6, 2),
     carbs DECIMAL(6, 2),
     protein DECIMAL(6, 2),
