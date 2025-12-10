@@ -87,14 +87,14 @@ router.get('/nutritional-intake', async (req, res) => {
 });
 
 // 2. Cat Diagnosis Plan
-// Usage: GET /api/temp/diagnosis-plans?condition=Diabetes
+// Usage: GET /api/temp/diagnosis-plans?uid=1&condition=Diabetes
 router.get('/diagnosis-plans', async (req, res) => {
     try {
-        const { condition } = req.query;
-        if (!condition) {
-            return res.status(400).json({ error: 'Missing required parameter: condition' });
+        const { uid, condition } = req.query;
+        if (!uid || !condition) {
+            return res.status(400).json({ error: 'Missing required parameters: uid, condition' });
         }
-        const [results] = await db.query(diagnosisPlanQuery, [condition]);
+        const [results] = await db.query(diagnosisPlanQuery, [uid, condition]);
         res.status(200).json(results);
     } catch (e) {
         console.error(e);

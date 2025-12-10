@@ -69,7 +69,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/temp/diagnosis-plans?condition=${encodeURIComponent(diagnosis)}`);
+      const response = await fetch(`http://localhost:3000/temp/diagnosis-plans?uid=${uid}&condition=${encodeURIComponent(diagnosis)}`);
       const data = await response.json();
       if (response.ok) {
         setDiagnosisPlans(data);
