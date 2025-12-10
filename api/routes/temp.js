@@ -40,6 +40,7 @@ const deleteFoodQuery = fs.readFileSync(path.join(SQL_PATH, 'food/delete_food.sq
 const readFoodIdQuery = fs.readFileSync(path.join(SQL_PATH, 'food/read_food_from_id.sql'), 'utf8');
 const readFoodNameQuery = fs.readFileSync(path.join(SQL_PATH, 'food/read_foods_from_name.sql'), 'utf8');
 const updateFoodQuery = fs.readFileSync(path.join(SQL_PATH, 'food/update_food.sql'), 'utf8');
+const readAllBrandsQuery = fs.readFileSync(path.join(SQL_PATH, 'food/read_all_brands.sql'), 'utf8');
 
 // --- PRE-LOAD FEEDS QUERIES ---
 const createFeedQuery = fs.readFileSync(path.join(SQL_PATH, 'feeds/create_feeds.sql'), 'utf8');
@@ -64,6 +65,7 @@ const deleteMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_pro
 const findMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/find_med_problem.sql'), 'utf8');
 const readMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/read_med_problem.sql'), 'utf8');
 const updateMedProblemQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/update_med_problem.sql'), 'utf8');
+const readAllMedProblemsQuery = fs.readFileSync(path.join(SQL_PATH, 'medicinal_problem/read_all_med_problems.sql'), 'utf8');
 
 
 
@@ -349,6 +351,16 @@ router.get('/food/get-by-name', async (req, res) => {
     }
 });
 
+// Read All Food Brands
+router.get('/food/brands', async (req, res) => {
+    try {
+        const [results] = await db.query(readAllBrandsQuery);
+        res.status(200).json(results);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
 // Update Food
 router.put('/food/update', async (req, res) => {
     try {
@@ -544,7 +556,7 @@ router.get('/med-problem/get', async (req, res) => {
 // Get All Medicinal Problems (for dropdown)
 router.get('/med-problem/list', async (req, res) => {
     try {
-        const [results] = await db.query('SELECT Mname, description FROM Medicinal_Problem ORDER BY Mname');
+        const [results] = await db.query(readAllMedProblemsQuery);
         res.status(200).json(results);
     } catch (e) {
         res.status(500).json({ error: e.message });
