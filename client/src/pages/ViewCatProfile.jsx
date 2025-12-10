@@ -4,7 +4,7 @@ import AddNewFood from '../components/AddNewFood';
 import EditDietPlan from '../components/EditDietPlan';
 import './ViewCatProfile.css';
 
-function ViewCatProfile({ onNavigate, cat }) {
+function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   const [showHealthModal, setShowHealthModal] = useState(false);
   const [showFoodModal, setShowFoodModal] = useState(false);
   const [showDietModal, setShowDietModal] = useState(false);
@@ -497,6 +497,7 @@ function ViewCatProfile({ onNavigate, cat }) {
           onClose={() => { setShowHealthModal(false); refreshHealthProblems(); }} 
           uid={uid}
           cname={cname}
+          medicinalProblems={medicinalProblems}
         />
       )}
       {showFoodModal && (

@@ -1,29 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './Modal.css';
 
-function AddHealthProblem({ onClose, uid, cname }) {
+function AddHealthProblem({ onClose, uid, cname, medicinalProblems }) {
   const [pname, setPname] = useState('');
   const [severity, setSeverity] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
-  const [medicinalProblems, setMedicinalProblems] = useState([]);
-
-  // Fetch all medicinal problems on component load
-  useEffect(() => {
-    const fetchMedicinalProblems = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/temp/med-problem/list');
-        const data = await response.json();
-        if (response.ok) {
-          setMedicinalProblems(data);
-        }
-      } catch (e) {
-        console.error('Failed to fetch medicinal problems:', e);
-      }
-    };
-
-    fetchMedicinalProblems();
-  }, []);
 
   const handleSave = async () => {
     setError('');
@@ -41,7 +23,7 @@ function AddHealthProblem({ onClose, uid, cname }) {
           uid: parseInt(uid),
           cname: cname,
           pname: pname,
-          diagnosis_date: new Date().toISOString().split('T')[0], // Today's date
+          diagnosis_date: new Date().toISOString().split('T')[0],
           severity: severity || null,
           description: description || null,
         }),
@@ -82,7 +64,7 @@ function AddHealthProblem({ onClose, uid, cname }) {
               onChange={(e) => setPname(e.target.value)}
             >
               <option value="">Select a health problem</option>
-              {medicinalProblems.map((problem) => (
+              {medicinalProblems && medicinalProblems.map((problem) => (
                 <option key={problem.Mname} value={problem.Mname}>
                   {problem.Mname}
                 </option>

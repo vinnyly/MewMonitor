@@ -134,3 +134,45 @@
 .save-cat-button:hover {
   background: #1a3326;
 }
+
+/* Diagnosis Section */
+.diagnosis-section {
+  grid-column: 1 / -1;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #E5E5E5;
+}
+
+.diagnosis-results {
+  margin-top: 15px;
+  overflow-x: auto;
+}
+
+.diagnosis-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.diagnosis-table th,
+.diagnosis-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.diagnosis-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.diagnosis-table td {
+  color: #1F2A20;
+  font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.diagnosis-table tr:hover {
+  background-color: #f9f9f9;
+}
