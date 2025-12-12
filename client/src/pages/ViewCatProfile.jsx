@@ -19,7 +19,6 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   const [healthProblems, setHealthProblems] = useState([]);
   const [dietPlans, setDietPlans] = useState([]);
   const [feedingHistory, setFeedingHistory] = useState([]);
-  const [foodCache, setFoodCache] = useState({}); // Cache food details by fid
   const [nutritionalIntake, setNutritionalIntake] = useState(null); // Average daily nutritional intake
 
   // Feeding entry form state
@@ -46,32 +45,6 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
       }
     } catch (e) {
       console.error('Failed to fetch nutritional intake:', e);
-    }
-  };
-
-  // Fetch food details by ID and cache them
-  const fetchFoodDetails = async (fid) => {
-    if (foodCache[fid]) return foodCache[fid]; // Already cached
-    try {
-      const response = await fetch(`http://localhost:3000/temp/food/get-by-id?fid=${fid}`);
-      const data = await response.json();
-      if (response.ok && data) {
-        setFoodCache(prev => ({ ...prev, [fid]: data }));
-        return data;
-      }
-    } catch (e) {
-      console.error('Failed to fetch food details:', e);
-    }
-    return null;
-  };
-
-  // Fetch all food details for feeding history
-  const fetchAllFoodDetails = async (feeds) => {
-    const uniqueFids = [...new Set(feeds.map(f => f.fid))];
-    for (const fid of uniqueFids) {
-      if (!foodCache[fid]) {
-        await fetchFoodDetails(fid);
-      }
     }
   };
 
@@ -115,13 +88,11 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
         const dietData = await dietResponse.json();
         if (dietResponse.ok) setDietPlans(dietData);
 
-        // Fetch feeding history
+        // Fetch feeding history (now includes food details)
         const feedsResponse = await fetch(`http://localhost:3000/temp/feeds/list?uid=${uid}&cname=${cname}`);
         const feedsData = await feedsResponse.json();
         if (feedsResponse.ok) {
           setFeedingHistory(feedsData);
-          // Fetch food details for all feeds
-          await fetchAllFoodDetails(feedsData);
         }
 
         // Fetch nutritional intake
@@ -199,15 +170,11 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
         return;
       }
 
-      // Cache the selected food details
-      setFoodCache(prev => ({ ...prev, [selectedFood.fid]: selectedFood }));
-
-      // Refresh feeding history
+      // Refresh feeding history (joined data)
       const feedsResponse = await fetch(`http://localhost:3000/temp/feeds/list?uid=${uid}&cname=${cname}`);
       const feedsData = await feedsResponse.json();
       if (feedsResponse.ok) {
         setFeedingHistory(feedsData);
-        await fetchAllFoodDetails(feedsData);
       }
 
       // Refresh nutritional intake
@@ -241,7 +208,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
       });
 
       if (response.ok) {
-        // Refresh feeding history
+        // Refresh feeding history (joined data)
         const feedsResponse = await fetch(`http://localhost:3000/temp/feeds/list?uid=${uid}&cname=${cname}`);
         const feedsData = await feedsResponse.json();
         if (feedsResponse.ok) setFeedingHistory(feedsData);
@@ -497,37 +464,34 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
                 {feedingHistory.length === 0 ? (
                   <tr><td colSpan="10">No feeding history yet.</td></tr>
                 ) : (
-                  feedingHistory.map((entry, index) => {
-                    const food = foodCache[entry.fid];
-                    return (
-                      <tr key={index}>
-                        <td>{entry.feed_date?.split('T')[0]}</td>
-                        <td>{entry.feed_time}</td>
-                        <td>{food?.brand || '-'}</td>
-                        <td>{food?.name || '-'}</td>
-                        <td>{food?.type || '-'}</td>
-                        <td>{food?.calories || '-'}</td>
-                        <td>{food?.carbs || '-'}</td>
-                        <td>{food?.protein || '-'}</td>
-                        <td>{food?.fat || '-'}</td>
-                        <td>
-                          <button
-                            onClick={() => handleDeleteFeedingEntry(entry)}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              color: 'red',
-                              cursor: 'pointer',
-                              fontWeight: 'bold',
-                              fontSize: '16px'
-                            }}
-                          >
-                            ✕
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })
+                  feedingHistory.map((entry, index) => (
+                    <tr key={index}>
+                      <td>{entry.feed_date?.split('T')[0]}</td>
+                      <td>{entry.feed_time}</td>
+                      <td>{entry.food_brand || '-'}</td>
+                      <td>{entry.food_name || '-'}</td>
+                      <td>{entry.food_type || '-'}</td>
+                      <td>{entry.food_calories ?? '-'}</td>
+                      <td>{entry.food_carbs ?? '-'}</td>
+                      <td>{entry.food_protein ?? '-'}</td>
+                      <td>{entry.food_fat ?? '-'}</td>
+                      <td>
+                        <button
+                          onClick={() => handleDeleteFeedingEntry(entry)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'red',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            fontSize: '16px'
+                          }}
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  ))
                 )}
               </tbody>
             </table>
