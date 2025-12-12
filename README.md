@@ -4,7 +4,8 @@ Website designed for use by cat shelters and cat owners to manage and monitor fe
 # How to run code locally:
 ## Prerequisites:
 1. Node.js version 24 LTS must be installed (https://nodejs.org/en/download)
-2. ".env" file with AWS database credentials needs to be added to the root of "api" folder; see ".env.example"
+2. AWS RDS for MySQL database must be created (https://aws.amazon.com/rds/mysql/) (see document for guide on how to set up configuration)
+3. ".env" file with AWS database credentials needs to be added to the root of "api" folder (see ".env.example" for template, make sure to just name ".env")
 ## Start Backend
 1. Open the "api" folder in a terminal
 2. On first start, run: "npm install"
