@@ -11,7 +11,7 @@ function HealthProblemsData({ onClose }) {
   useEffect(() => {
     const loadProblems = async () => {
       try {
-        const response = await fetch('http://localhost:3000/temp/med-problem/list');
+        const response = await fetch('http://localhost:3000/catprofile/med-problem/list');
         const data = await response.json();
         if (response.ok) {
           setProblems(data);
@@ -26,7 +26,7 @@ function HealthProblemsData({ onClose }) {
   // Refetch problems after update/delete
   const fetchProblems = async () => {
     try {
-      const response = await fetch('http://localhost:3000/temp/med-problem/list');
+      const response = await fetch('http://localhost:3000/catprofile/med-problem/list');
       const data = await response.json();
       if (response.ok) {
         setProblems(data);
@@ -53,7 +53,7 @@ function HealthProblemsData({ onClose }) {
   // Save problem changes
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch('http://localhost:3000/temp/med-problem/update', {
+      const response = await fetch('http://localhost:3000/catprofile/med-problem/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -82,7 +82,7 @@ function HealthProblemsData({ onClose }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/med-problem/delete', {
+      const response = await fetch('http://localhost:3000/catprofile/med-problem/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ Mname }),

@@ -36,7 +36,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   // Fetch nutritional intake
   const fetchNutritionalIntake = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/temp/nutritional-intake?uid=${uid}&cname=${encodeURIComponent(cname)}`);
+      const response = await fetch(`http://localhost:3000/catprofile/nutritional-intake?uid=${uid}&cname=${encodeURIComponent(cname)}`);
       const data = await response.json();
       if (response.ok && data && data.length > 0) {
         setNutritionalIntake(data[0]);
@@ -67,29 +67,29 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
     const fetchCatData = async () => {
       try {
         // Check if user is a site manager
-        const siteManagerResponse = await fetch(`http://localhost:3000/temp/site-manager/check?uid=${uid}`);
+        const siteManagerResponse = await fetch(`http://localhost:3000/catprofile/site-manager/check?uid=${uid}`);
         const siteManagerData = await siteManagerResponse.json();
         if (siteManagerResponse.ok) {
           setIsSiteManager(siteManagerData.isSiteManager);
         }
 
         // Fetch cat info
-        const catResponse = await fetch(`http://localhost:3000/temp/cat/get?uid=${uid}&name=${cname}`);
+        const catResponse = await fetch(`http://localhost:3000/catprofile/cat/get?uid=${uid}&name=${cname}`);
         const catData = await catResponse.json();
         if (catResponse.ok) setCatInfo(catData);
 
         // Fetch health problems
-        const problemsResponse = await fetch(`http://localhost:3000/temp/cat-problem/list?uid=${uid}&cname=${cname}`);
+        const problemsResponse = await fetch(`http://localhost:3000/catprofile/cat-problem/list?uid=${uid}&cname=${cname}`);
         const problemsData = await problemsResponse.json();
         if (problemsResponse.ok) setHealthProblems(problemsData);
 
         // Fetch diet plans
-        const dietResponse = await fetch(`http://localhost:3000/temp/diet-plan/list?uid=${uid}&cname=${cname}`);
+        const dietResponse = await fetch(`http://localhost:3000/catprofile/diet-plan/list?uid=${uid}&cname=${cname}`);
         const dietData = await dietResponse.json();
         if (dietResponse.ok) setDietPlans(dietData);
 
         // Fetch feeding history (now includes food details)
-        const feedsResponse = await fetch(`http://localhost:3000/temp/feeds/list?uid=${uid}&cname=${cname}`);
+        const feedsResponse = await fetch(`http://localhost:3000/catprofile/feeds/list?uid=${uid}&cname=${cname}`);
         const feedsData = await feedsResponse.json();
         if (feedsResponse.ok) {
           setFeedingHistory(feedsData);
@@ -110,7 +110,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   const handleFoodSearch = async () => {
     if (!foodSearch) return;
     try {
-      const response = await fetch(`http://localhost:3000/temp/food/get-by-name?name=${encodeURIComponent(foodSearch)}`);
+      const response = await fetch(`http://localhost:3000/catprofile/food/get-by-name?name=${encodeURIComponent(foodSearch)}`);
       const data = await response.json();
       if (response.ok) {
         setFoodResults(Array.isArray(data) ? data : [data].filter(Boolean));
@@ -151,7 +151,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/feeds/create', {
+      const response = await fetch('http://localhost:3000/catprofile/feeds/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -171,7 +171,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
       }
 
       // Refresh feeding history (joined data)
-      const feedsResponse = await fetch(`http://localhost:3000/temp/feeds/list?uid=${uid}&cname=${cname}`);
+      const feedsResponse = await fetch(`http://localhost:3000/catprofile/feeds/list?uid=${uid}&cname=${cname}`);
       const feedsData = await feedsResponse.json();
       if (feedsResponse.ok) {
         setFeedingHistory(feedsData);
@@ -195,7 +195,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   // Delete feeding entry
   const handleDeleteFeedingEntry = async (entry) => {
     try {
-      const response = await fetch('http://localhost:3000/temp/feeds/delete', {
+      const response = await fetch('http://localhost:3000/catprofile/feeds/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -209,7 +209,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
 
       if (response.ok) {
         // Refresh feeding history (joined data)
-        const feedsResponse = await fetch(`http://localhost:3000/temp/feeds/list?uid=${uid}&cname=${cname}`);
+        const feedsResponse = await fetch(`http://localhost:3000/catprofile/feeds/list?uid=${uid}&cname=${cname}`);
         const feedsData = await feedsResponse.json();
         if (feedsResponse.ok) setFeedingHistory(feedsData);
 
@@ -224,7 +224,7 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
   // Delete health problem
   const handleDeleteHealthProblem = async (pname) => {
     try {
-      const response = await fetch('http://localhost:3000/temp/cat-problem/delete', {
+      const response = await fetch('http://localhost:3000/catprofile/cat-problem/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -244,13 +244,13 @@ function ViewCatProfile({ onNavigate, cat, medicinalProblems }) {
 
   // Refresh data after modal closes
   const refreshHealthProblems = async () => {
-    const response = await fetch(`http://localhost:3000/temp/cat-problem/list?uid=${uid}&cname=${cname}`);
+    const response = await fetch(`http://localhost:3000/catprofile/cat-problem/list?uid=${uid}&cname=${cname}`);
     const data = await response.json();
     if (response.ok) setHealthProblems(data);
   };
 
   const refreshDietPlans = async () => {
-    const response = await fetch(`http://localhost:3000/temp/diet-plan/list?uid=${uid}&cname=${cname}`);
+    const response = await fetch(`http://localhost:3000/catprofile/diet-plan/list?uid=${uid}&cname=${cname}`);
     const data = await response.json();
     if (response.ok) setDietPlans(data);
   };

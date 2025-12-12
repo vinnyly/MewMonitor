@@ -44,22 +44,24 @@ if (INIT) {
     const dbInitRouter = require('./routes/db_init.js');
     app.use('/dev', dbInitRouter);
 }
+
 const signinRouter = require('./routes/sign_in.js');
 app.use('/signin', signinRouter);
 
-// TEMP ROUTER (For complex queries)
-const tempRouter = require('./routes/temp.js');
-app.use('/temp', tempRouter);
+const homepageRouter = require('./routes/homepage.js');
+app.use('/homepage', homepageRouter);
 
-//API ROUTES (ENDPOINTS)
+const catProfileRouter = require('./routes/cat_profile.js');
+app.use('/catprofile', catProfileRouter);
 
+const signUpRouter = require('./routes/sign_up.js');
+app.use('/signup', signUpRouter);
+
+// OTHER ROUTES (ENDPOINTS)
 // Test Route: Just to check if the server is alive
 app.get('/', (req, res) => {
     res.send('API is running!');
 });
-
-
-
 
 
 // START SERVER

@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     const fetchMedicinalProblems = async () => {
       try {
-        const response = await fetch('http://localhost:3000/temp/med-problem/list');
+        const response = await fetch('http://localhost:3000/catprofile/med-problem/list');
         const data = await response.json();
         if (response.ok) {
           setMedicinalProblems(data);
@@ -29,10 +29,10 @@ function App() {
     };
 
     const uid = localStorage.getItem('uid');
-    if (uid) {
+    if (uid && (currentPage === 'homepage' || currentPage === 'catprofile')) {
       fetchMedicinalProblems();
     }
-  }, []);
+  }, [currentPage]);
 
   const navigate = (page, catData = null) => {
     if (catData) {

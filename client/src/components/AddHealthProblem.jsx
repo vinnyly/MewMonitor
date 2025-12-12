@@ -16,7 +16,7 @@ function AddHealthProblem({ onClose, uid, cname, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/cat-problem/create', {
+      const response = await fetch('http://localhost:3000/catprofile/cat-problem/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

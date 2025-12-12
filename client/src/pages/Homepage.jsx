@@ -39,7 +39,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
   // Refresh cat list
   const refreshCats = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/temp/cat/list?uid=${uid}`);
+      const response = await fetch(`http://localhost:3000/homepage/cat/list?uid=${uid}`);
       const data = await response.json();
       if (response.ok) {
         setCats(data);
@@ -52,14 +52,12 @@ function Homepage({ onNavigate, medicinalProblems }) {
   // Fetch all cats for the logged-in user
   useEffect(() => {
     const fetchConditionsByAge = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/temp/conditions-by-age');
-        const data = await response.json();
-        if (response.ok) {
-          setConditionsByAge(data);
-        }
-      } catch (e) {
-        console.error('Failed to fetch conditions by age:', e);
+      // skip if no age provided
+      if (!selectedAge) return;
+      const response = await fetch(`http://localhost:3000/homepage/conditions-by-age?age=${selectedAge}`);
+      const data = await response.json();
+      if (response.ok) {
+        setConditionsByAge(data);
       }
     };
 
@@ -77,7 +75,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
 
     if (uid) {
       refreshCats();
-      fetchConditionsByAge();
+      // fetchConditionsByAge(); // removed until age is provided
       fetchUserName();
     }
   }, [uid]);
@@ -92,7 +90,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/temp/diagnosis-plans?uid=${uid}&condition=${encodeURIComponent(diagnosis)}`);
+      const response = await fetch(`http://localhost:3000/homepage/diagnosis-plans?uid=${uid}&condition=${encodeURIComponent(diagnosis)}`);
       const data = await response.json();
       if (response.ok) {
         setDiagnosisPlans(data);
@@ -114,7 +112,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/cat/create', {
+      const response = await fetch('http://localhost:3000/homepage/cat/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -156,7 +154,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/cat/delete', {
+      const response = await fetch('http://localhost:3000/homepage/cat/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -196,7 +194,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
   // Save cat changes
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch('http://localhost:3000/temp/cat/update', {
+      const response = await fetch('http://localhost:3000/homepage/cat/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -248,7 +246,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/temp/conditions-by-age?age=${age}`);
+      const response = await fetch(`http://localhost:3000/homepage/conditions-by-age?age=${age}`);
       const data = await response.json();
       if (response.ok) {
         setConditionsByAge(data);
@@ -270,7 +268,7 @@ function Homepage({ onNavigate, medicinalProblems }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/temp/popular-food?condition=${encodeURIComponent(condition)}`);
+      const response = await fetch(`http://localhost:3000/homepage/popular-food?condition=${encodeURIComponent(condition)}`);
       const data = await response.json();
       if (response.ok) {
         setPopularFoods(data);

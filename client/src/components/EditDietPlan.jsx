@@ -18,7 +18,7 @@ function EditDietPlan({ onClose, uid, cname, existingPlan }) {
     try {
       // If there's an existing plan, update it. Otherwise, create a new one.
       if (existingPlan) {
-        const response = await fetch('http://localhost:3000/temp/diet-plan/update', {
+        const response = await fetch('http://localhost:3000/catprofile/diet-plan/update', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -36,7 +36,7 @@ function EditDietPlan({ onClose, uid, cname, existingPlan }) {
           return;
         }
       } else {
-        const response = await fetch('http://localhost:3000/temp/diet-plan/create', {
+        const response = await fetch('http://localhost:3000/catprofile/diet-plan/create', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

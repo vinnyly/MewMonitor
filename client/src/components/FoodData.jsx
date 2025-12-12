@@ -17,7 +17,7 @@ function FoodData({ onClose, isSiteManager }) {
   useEffect(() => {
     const loadFoods = async () => {
       try {
-        const response = await fetch('http://localhost:3000/temp/food/list');
+        const response = await fetch('http://localhost:3000/catprofile/food/list');
         const data = await response.json();
         if (response.ok) {
           setFoods(data);
@@ -32,7 +32,7 @@ function FoodData({ onClose, isSiteManager }) {
   // Refetch foods after update/delete
   const fetchFoods = async () => {
     try {
-      const response = await fetch('http://localhost:3000/temp/food/list');
+      const response = await fetch('http://localhost:3000/catprofile/food/list');
       const data = await response.json();
       if (response.ok) {
         setFoods(data);
@@ -76,7 +76,7 @@ function FoodData({ onClose, isSiteManager }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/food/update', {
+      const response = await fetch('http://localhost:3000/catprofile/food/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -111,7 +111,7 @@ function FoodData({ onClose, isSiteManager }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/food/delete', {
+      const response = await fetch('http://localhost:3000/catprofile/food/delete', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fid }),

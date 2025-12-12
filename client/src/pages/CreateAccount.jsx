@@ -17,7 +17,7 @@ function CreateAccount({ onNavigate }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/user/create', {
+      const response = await fetch('http://localhost:3000/signup/user/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, password }),

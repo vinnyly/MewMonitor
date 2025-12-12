@@ -20,7 +20,7 @@ function AddNewFood({ onClose }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/temp/food/create', {
+      const response = await fetch('http://localhost:3000/catprofile/food/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
